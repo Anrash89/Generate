@@ -16,21 +16,27 @@ function generateLabel() {
     labelPreview.style.fontSize = `${fontSize}pt`;
     labelPreview.style.height = 'auto'; 
     
-    const fields = ['productName', 'sku', 'ean13', 'composition', 'origin', 'productionDate', 'manufacturer', 'importer', 'feedback'];
-    fields.forEach(id => {
-        const element = document.getElementById(`preview-${id}`);
-        if (element) {
-            let value = document.getElementById(id).value;
-
-            // Возвращаем простую логику: для SKU добавляем "Артикул:", для остального - просто значение
-            if (id === 'sku') {
-                element.innerText = `Артикул: ${value}`;
-            } else {
-                element.innerText = value;
-            }
-        }
+    // Заполняем стандартные поля
+    const standardFields = ['productName', 'composition', 'origin', 'productionDate', 'manufacturer', 'importer'];
+    standardFields.forEach(id => {
+        document.getElementById(`preview-${id}`).innerText = document.getElementById(id).value;
     });
+    // Отдельно обрабатываем SKU
+    document.getElementById('preview-sku').innerText = `Артикул: ${document.getElementById('sku').value}`;
 
+    // --- ГЛАВНОЕ ИЗМЕНЕНИЕ: Формируем блок "Обратная связь" ---
+    const feedbackElement = document.getElementById('preview-feedback');
+    const feedbackContact = document.getElementById('feedback').value; // Берем WhatsApp из поля ввода
+    const staticPhrase = "Свяжитесь с нами, если что-то пошло не так с товаром или доставкой - мы быстро решим вопрос в рамках законодательства РФ. ";
+    
+    // Собираем итоговый HTML-код
+    const finalHtml = `<strong>Обратная связь:</strong> ${staticPhrase}${feedbackContact}`;
+    
+    // Вставляем HTML в наш параграф. innerHTML ОБЯЗАТЕЛЕН, чтобы тег <strong> сработал
+    feedbackElement.innerHTML = finalHtml;
+    // --- КОНЕЦ ИЗМЕНЕНИЯ ---
+
+    // Генерируем штрихкод
     const ean13 = document.getElementById('ean13').value;
     if (ean13) {
         JsBarcode("#barcode", ean13, {
