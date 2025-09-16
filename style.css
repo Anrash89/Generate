@@ -9,6 +9,7 @@ body {
 
 .editor-container {
     width: 45%;
+    min-width: 400px; /* Добавим минимальную ширину для удобства */
 }
 .preview-container {
     width: 50%;
@@ -49,6 +50,12 @@ button:hover {
     gap: 10px;
 }
 
+.autofit-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 hr {
     border: none;
     border-top: 1px solid #ddd;
@@ -57,9 +64,8 @@ hr {
 
 /* --- Стили для самой этикетки --- */
 .label {
-    /* РАЗМЕРЫ ТЕПЕРЬ ЗАДАЮТСЯ ЧЕРЕЗ JAVASCRIPT */
     border: 1px dashed #999;
-    padding: 2mm; /* Уменьшили внутренние отступы */
+    padding: 2mm;
     background: white;
     box-sizing: border-box;
     display: flex;
@@ -94,17 +100,17 @@ hr {
     flex-grow: 1;
 }
 .details-section p {
-    margin: 0 0 0.5mm 0; /* Уменьшили отступ между параграфами */
-    line-height: 1.2;    /* Сделали строки ближе друг к другу */
+    margin: 0 0 0.5mm 0;
+    line-height: 1.2;
 }
 
 .footer-section {
-    margin-top: auto; /* Прижимает значки к низу */
+    margin-top: auto;
     text-align: right;
     padding-top: 1mm;
 }
 .icon {
-    width: 7mm; /* Немного уменьшили иконки */
+    width: 7mm;
     height: 7mm;
     margin-left: 1.5mm;
 }
@@ -124,5 +130,37 @@ hr {
         margin: 0;
         padding: 0;
         page-break-after: always;
+    }
+}
+
+/* 
+===================================================================
+--- НОВЫЙ БЛОК: СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ---
+===================================================================
+*/
+/* Этот блок будет применяться только на экранах шириной 900px или меньше */
+@media (max-width: 900px) {
+    body {
+        /* Меняем направление flex-контейнера на вертикальное (друг под другом) */
+        flex-direction: column;
+        /* Выравниваем элементы по центру для лучшего вида */
+        align-items: center;
+    }
+
+    .editor-container,
+    .preview-container {
+        /* Заставляем каждый блок занимать почти всю ширину экрана */
+        width: 95%;
+        min-width: unset; /* Сбрасываем минимальную ширину */
+    }
+    
+    .editor-container {
+         /* Добавляем отступ снизу, чтобы он не слипался с предпросмотром */
+        margin-bottom: 30px;
+    }
+    
+    .settings-grid {
+        /* На маленьких экранах настройки тоже будут идти друг под другом */
+        grid-template-columns: 1fr;
     }
 }
