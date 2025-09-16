@@ -16,20 +16,15 @@ function generateLabel() {
     labelPreview.style.fontSize = `${fontSize}pt`;
     labelPreview.style.height = 'auto'; 
     
-    // --- ОСНОВНОЕ ИЗМЕНЕНИЕ ЗДЕСЬ ---
     const fields = ['productName', 'sku', 'ean13', 'composition', 'origin', 'productionDate', 'manufacturer', 'importer', 'feedback'];
     fields.forEach(id => {
         const element = document.getElementById(`preview-${id}`);
         if (element) {
             let value = document.getElementById(id).value;
 
-            // Добавляем специальную логику для разных полей
+            // Возвращаем простую логику: для SKU добавляем "Артикул:", для остального - просто значение
             if (id === 'sku') {
                 element.innerText = `Артикул: ${value}`;
-            } else if (id === 'feedback') {
-                // Добавляем стандартную фразу перед значением из поля "Обратная связь"
-                const prefix = "Свяжитесь с нами, если что-то пошло не так с товаром или доставкой - мы быстро решим вопрос в рамках законодательства РФ. ";
-                element.innerText = prefix + value;
             } else {
                 element.innerText = value;
             }
