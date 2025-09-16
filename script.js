@@ -24,16 +24,15 @@ function generateLabel() {
     // Отдельно обрабатываем SKU
     document.getElementById('preview-sku').innerText = `Артикул: ${document.getElementById('sku').value}`;
 
-    // --- ГЛАВНОЕ ИЗМЕНЕНИЕ: Формируем блок "Обратная связь" ---
-    const feedbackElement = document.getElementById('preview-feedback');
-    const feedbackContact = document.getElementById('feedback').value; // Берем WhatsApp из поля ввода
-    const staticPhrase = "Свяжитесь с нами, если что-то пошло не так с товаром или доставкой - мы быстро решим вопрос в рамках законодательства РФ. ";
+    // --- ГЛАВНОЕ ИЗМЕНЕНИЕ: Заполняем блок "Обратная связь" по частям ---
+    const staticTextElement = document.getElementById('feedback-static-text');
+    const dynamicContactElement = document.getElementById('feedback-dynamic-contact');
+
+    // Статический текст (ваш шаблон)
+    staticTextElement.innerText = "Свяжитесь с нами, если что-то пошло не так с товаром или доставкой - мы быстро решим вопрос в рамках законодательства РФ. ";
     
-    // Собираем итоговый HTML-код
-    const finalHtml = `<strong>Обратная связь:</strong> ${staticPhrase}${feedbackContact}`;
-    
-    // Вставляем HTML в наш параграф. innerHTML ОБЯЗАТЕЛЕН, чтобы тег <strong> сработал
-    feedbackElement.innerHTML = finalHtml;
+    // Динамический текст (из поля ввода)
+    dynamicContactElement.innerText = document.getElementById('feedbackContact').value;
     // --- КОНЕЦ ИЗМЕНЕНИЯ ---
 
     // Генерируем штрихкод
