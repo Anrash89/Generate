@@ -1,4 +1,18 @@
 function generateLabel() {
+    // === НОВЫЙ БЛОК: Получаем настройки этикетки ===
+    const labelWidth = document.getElementById('labelWidth').value;
+    const labelHeight = document.getElementById('labelHeight').value;
+    const fontSize = document.getElementById('fontSize').value;
+    
+    // Находим сам элемент этикетки
+    const labelPreview = document.getElementById('label-preview');
+
+    // Применяем стили к этикетке
+    labelPreview.style.width = `${labelWidth}mm`;
+    labelPreview.style.height = `${labelHeight}mm`;
+    labelPreview.style.fontSize = `${fontSize}pt`;
+    // ===============================================
+
     // 1. Получаем данные из всех полей формы
     const productName = document.getElementById('productName').value;
     const sku = document.getElementById('sku').value;
@@ -25,10 +39,10 @@ function generateLabel() {
         JsBarcode("#barcode", ean13, {
             format: "EAN13",
             lineColor: "#000",
-            width: 2,
-            height: 50,
-            displayValue: true, // Показывает цифры под штрихкодом
-            fontSize: 14
+            width: 1.5, // Немного уменьшили толщину линий для маленьких этикеток
+            height: 40,
+            displayValue: true,
+            fontSize: 12
         });
     }
 }
