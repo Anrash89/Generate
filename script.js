@@ -19,21 +19,22 @@ function generateLabel() {
     // Заполняем стандартные поля
     const standardFields = ['productName', 'composition', 'origin', 'productionDate', 'manufacturer', 'importer'];
     standardFields.forEach(id => {
-        document.getElementById(`preview-${id}`).innerText = document.getElementById(id).value;
+        const previewElement = document.getElementById(`preview-${id}`);
+        if(previewElement) {
+            previewElement.innerText = document.getElementById(id).value;
+        }
     });
     // Отдельно обрабатываем SKU
     document.getElementById('preview-sku').innerText = `Артикул: ${document.getElementById('sku').value}`;
 
-    // --- ГЛАВНОЕ ИЗМЕНЕНИЕ: Заполняем блок "Обратная связь" по частям ---
-    const staticTextElement = document.getElementById('feedback-static-text');
-    const dynamicContactElement = document.getElementById('feedback-dynamic-contact');
-
-    // Статический текст (ваш шаблон)
-    staticTextElement.innerText = "Свяжитесь с нами, если что-то пошло не так с товаром или доставкой - мы быстро решим вопрос в рамках законодательства РФ. ";
+    // --- ИСПРАВЛЕННАЯ ЛОГИКА ДЛЯ "ОБРАТНОЙ СВЯЗИ" ---
+    const feedbackContentElement = document.getElementById('feedback-content');
+    const staticPhrase = "Свяжитесь с нами, если что-то пошло не так с товаром или доставкой - мы быстро решим вопрос в рамках законодательства РФ. ";
+    const dynamicContact = document.getElementById('feedbackContact').value;
     
-    // Динамический текст (из поля ввода)
-    dynamicContactElement.innerText = document.getElementById('feedbackContact').value;
-    // --- КОНЕЦ ИЗМЕНЕНИЯ ---
+    // Склеиваем шаблонную фразу и контакт из поля ввода
+    feedbackContentElement.innerText = staticPhrase + dynamicContact;
+    // --- КОНЕЦ ИСПРАВЛЕНИЯ ---
 
     // Генерируем штрихкод
     const ean13 = document.getElementById('ean13').value;
@@ -50,7 +51,6 @@ function generateLabel() {
         labelPreview.style.height = `${contentHeightPx}px`;
         const contentHeightMm = pixelsToMm(contentHeightPx);
         labelHeightInput.value = contentHeightMm.toFixed(1);
-
     } else {
         labelPreview.style.height = `${labelHeightInput.value}mm`;
     }
