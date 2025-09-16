@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор Этикеток</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="editor-container">
+        <h1>Генератор этикеток</h1>
+        <form id="label-form">
+            <label for="productName">Наименование товара:</label>
+            <input type="text" id="productName" value="Канцелярский набор «Light purple»">
+
+            <label for="sku">Артикул (SKU):</label>
+            <input type="text" id="sku" value="US003">
+
+            <label for="ean13">Штрихкод (EAN-13):</label>
+            <input type="text" id="ean13" value="6920250915012">
+
+            <label for="composition">Комплектация:</label>
+            <textarea id="composition" rows="5">1 х тетрадь B5, 1 х степлер, 1 х калькулятор, 1 х канцелярский нож, 1 х зажим для бумаги, 1 х выделители 6 шт. разных цветов в комплекте, 1 х ленточный корректор, 1 х шариковые ручки 6 шт в комплекте, 1 х шариковая ручка с 6-ю цветами, 1 х вечный карандаш, 1 х выделитель коричневый, 1 х шариковая ручка черная, 1 х гелевая ручка-роллер черная, 1 х коробка.</textarea>
+
+            <label for="origin">Страна происхождения:</label>
+            <input type="text" id="origin" value="Китай">
+
+            <label for="productionDate">Дата производства / Партия:</label>
+            <input type="text" id="productionDate" value="сентябрь 2025">
+
+            <label for="manufacturer">Производитель:</label>
+            <textarea id="manufacturer" rows="2">UNION SOURCE CO.,LTD, 12F Sellers Union Buliding, 288 Guanghua Road, National Hi-Tech Zone Ningbo, China 315048, КНР</textarea>
+
+            <label for="importer">Импортер / Ответственное лицо:</label>
+            <textarea id="importer" rows="3">ООО «Спринг», РФ, 121596, г. Москва, вн.тер.г. муниципальный округ Можайский, ул. Горбунова, д.2, стр.3, помещ. 33/2, ИНН 7733368052, ОГРН 1217700184800, Тел.: +7 (495) 032-02-97, e-mail: info@springingredients.ru</textarea>
+            
+            <label for="feedback">Обратная связь и претензии:</label>
+            <input type="text" id="feedback" value="WhatsApp: +79250588988">
+
+            <button type="button" onclick="generateLabel()">Сгенерировать этикетку</button>
+            <button type="button" onclick="window.print()">Печать</button>
+        </form>
+    </div>
+
+    <div class="preview-container">
+        <h2>Предпросмотр</h2>
+        <!-- Это шаблон этикетки. Мы будем заполнять его с помощью JavaScript -->
+        <div id="label-preview" class="label">
+            <div class="header-section">
+                <strong id="preview-productName"></strong>
+                <span id="preview-sku"></span>
+            </div>
+            <div class="barcode-section">
+                <svg id="barcode"></svg>
+            </div>
+            <div class="details-section">
+                <p><strong>Комплектация:</strong> <span id="preview-composition"></span></p>
+                <p><strong>Страна происхождения:</strong> <span id="preview-origin"></span></p>
+                <p><strong>Дата производства / Партия:</strong> <span id="preview-productionDate"></span></p>
+                <p><strong>Производитель:</strong> <span id="preview-manufacturer"></span></p>
+                <p><strong>Импортер/лицо для претензий в РФ:</strong> <span id="preview-importer"></span></p>
+                 <p><strong>Обратная связь:</strong> <span id="preview-feedback"></span></p>
+            </div>
+            <div class="footer-section">
+                <!-- Ссылки на изображения значков. Вы можете заменить их на свои файлы. -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/EAC_mark.svg/240px-EAC_mark.svg.png" alt="EAC" class="icon">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Recycling_symbol_PAP_20.svg/240px-Recycling_symbol_PAP_20.svg.png" alt="PAP 20" class="icon">
+            </div>
+        </div>
+    </div>
+
+    <!-- Библиотека для генерации штрихкода -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
