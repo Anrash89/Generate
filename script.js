@@ -1,7 +1,4 @@
-// Вспомогательная функция для конвертации пикселей в миллиметры
-function pixelsToMm(px) {
-    return px * 25.4 / 96;
-}
+function pixelsToMm(px) { return px * 25.4 / 96; }
 
 function generateLabel() {
     // === Получаем все значения из полей ===
@@ -19,31 +16,30 @@ function generateLabel() {
     // Заполняем стандартные поля
     const standardFields = ['productName', 'composition', 'origin', 'productionDate', 'manufacturer', 'importer'];
     standardFields.forEach(id => {
-        const previewElement = document.getElementById(`preview-${id}`);
-        if(previewElement) {
-            previewElement.innerText = document.getElementById(id).value;
-        }
+        document.getElementById(`preview-${id}`).innerText = document.getElementById(id).value;
     });
-    // Отдельно обрабатываем SKU
     document.getElementById('preview-sku').innerText = `Артикул: ${document.getElementById('sku').value}`;
-
-    // --- ИСПРАВЛЕННАЯ ЛОГИКА ДЛЯ "ОБРАТНОЙ СВЯЗИ" ---
-    const feedbackContentElement = document.getElementById('feedback-content');
     const staticPhrase = "Свяжитесь с нами, если что-то пошло не так с товаром или доставкой - мы быстро решим вопрос в рамках законодательства РФ. ";
-    const dynamicContact = document.getElementById('feedbackContact').value;
+    document.getElementById('feedback-content').innerText = staticPhrase + document.getElementById('feedbackContact').value;
     
-    // Склеиваем шаблонную фразу и контакт из поля ввода
-    feedbackContentElement.innerText = staticPhrase + dynamicContact;
-    // --- КОНЕЦ ИСПРАВЛЕНИЯ ---
-
     // Генерируем штрихкод
     const ean13 = document.getElementById('ean13').value;
-    if (ean13) {
-        JsBarcode("#barcode", ean13, {
-            format: "EAN13", lineColor: "#000", width: 1.5, height: 30,
-            displayValue: true, fontSize: 12
-        });
-    }
+    if (ean13) { JsBarcode("#barcode", ean13, { format: "EAN13", lineColor: "#000", width: 1.5, height: 30, displayValue: true, fontSize: 12 }); }
+
+    // --- НОВЫЙ БЛОК: Динамическое добавление значков ---
+    const iconContainer = document.getElementById('preview-icons');
+    iconContainer.innerHTML = ''; // Очищаем контейнер перед добавлением
+
+    const checkedIcons = document.querySelectorAll('input[name="icons"]:checked');
+    
+    checkedIcons.forEach(checkbox => {
+        const img = document.createElement('img');
+        img.src = 'icons/' + checkbox.value; // Путь к файлу: 'icons/eac.png'
+        img.alt = checkbox.value.split('.')[0]; 
+        img.className = 'icon'; // Применяем стили размера из CSS
+        iconContainer.appendChild(img);
+    });
+    // --- КОНЕЦ НОВОГО БЛОКА ---
 
     // === ЛОГИКА АВТОПОДБОРА ВЫСОТЫ ===
     if (autoHeightEnabled) {
@@ -57,16 +53,15 @@ function generateLabel() {
 }
 
 function toggleAutoHeight() {
-    const labelHeightInput = document.getElementById('labelHeight');
-    const autoHeightCheckbox = document.getElementById('autoHeight');
-    labelHeightInput.disabled = autoHeightCheckbox.checked;
+    document.getElementById('labelHeight').disabled = document.getElementById('autoHeight').checked;
     generateLabel();
 }
 
-// Первоначальная загрузка
 window.onload = () => {
+    // Обновляем слушатели, чтобы они реагировали и на чекбоксы
     document.querySelectorAll('input, textarea').forEach(input => {
-        input.addEventListener('input', generateLabel);
+        input.addEventListener('input', generateLabel); // Для текстовых полей
+        input.addEventListener('change', generateLabel); // Для чекбоксов
     });
     toggleAutoHeight();
 };

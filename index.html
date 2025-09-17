@@ -7,91 +7,71 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="editor-container">
         <h1>Генератор этикеток</h1>
         <form id="label-form">
             
             <h3>Настройки этикетки</h3>
+            <!-- ... (секция настроек остается без изменений) ... -->
             <div class="settings-grid">
-                <div>
-                    <label for="labelWidth">Ширина (мм):</label>
-                    <input type="number" id="labelWidth" value="58">
-                </div>
-                <div>
-                    <label for="labelHeight">Высота (мм):</label>
-                    <input type="number" id="labelHeight" value="60">
-                </div>
-                <div>
-                    <label for="fontSize">Размер шрифта (pt):</label>
-                    <input type="number" id="fontSize" value="7" step="0.5">
-                </div>
+                <div><label for="labelWidth">Ширина (мм):</label><input type="number" id="labelWidth" value="58"></div>
+                <div><label for="labelHeight">Высота (мм):</label><input type="number" id="labelHeight" value="60"></div>
+                <div><label for="fontSize">Размер шрифта (pt):</label><input type="number" id="fontSize" value="7" step="0.5"></div>
             </div>
-            <div class="autofit-container">
-                <input type="checkbox" id="autoHeight" checked onchange="toggleAutoHeight()">
-                <label for="autoHeight">Автоподбор высоты</label>
+            <div class="autofit-container"><input type="checkbox" id="autoHeight" checked onchange="toggleAutoHeight()"><label for="autoHeight">Автоподбор высоты</label></div>
+            <hr>
+
+            <!-- НОВЫЙ БЛОК ДЛЯ ВЫБОРА ЗНАЧКОВ -->
+            <h3>Значки</h3>
+            <div class="icons-selection-container">
+                <div>
+                    <input type="checkbox" id="icon-eac" name="icons" value="eac.png" checked>
+                    <label for="icon-eac">EAC</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="icon-pap20" name="icons" value="pap20.png" checked>
+                    <label for="icon-pap20">PAP 20</label>
+                </div>
+                <!-- Сюда в будущем можно будет добавлять новые значки по аналогии -->
             </div>
-            
             <hr>
             
             <h3>Содержимое этикетки</h3>
-            <label for="productName">Наименование товара:</label>
-            <input type="text" id="productName" value="Канцелярский набор «Light purple»">
-            <label for="sku">Артикул (SKU):</label>
-            <input type="text" id="sku" value="US003">
-            <label for="ean13">Штрихкод (EAN-13):</label>
-            <input type="text" id="ean13" value="6920250915012">
-            <label for="composition">Комплектация:</label>
-            <textarea id="composition" rows="5">1 х тетрадь B5, 1 х степлер, 1 х калькулятор, 1 х канцелярский нож, 1 х зажим для бумаги, 1 х выделители 6 шт. разных цветов в комплекте, 1 х ленточный корректор, 1 х шариковые ручки 6 шт в комплекте, 1 х шариковая ручка с 6-ю цветами, 1 х вечный карандаш, 1 х выделитель коричневый, 1 х шариковая ручка черная, 1 х гелевая ручка-роллер черная, 1 х коробка.</textarea>
-            <label for="origin">Страна происхождения:</label>
-            <input type="text" id="origin" value="Китай">
-            <label for="productionDate">Дата производства / Партия:</label>
-            <input type="text" id="productionDate" value="сентябрь 2025">
-            <label for="manufacturer">Производитель:</label>
-            <textarea id="manufacturer" rows="2">UNION SOURCE CO.,LTD, 12F Sellers Union Buliding, 288 Guanghua Road, National Hi-Tech Zone Ningbo, China 315048, КНР</textarea>
-            <label for="importer">Импортер / Ответственное лицо:</label>
-            <textarea id="importer" rows="3">ООО «Спринг», РФ, 121596, г. Москва, вн.тер.г. муниципальный округ Можайский, ул. Горбунова, д.2, стр.3, помещ. 33/2, ИНН 7733368052, ОГРН 1217700184800, Тел.: +7 (495) 032-02-97, e-mail: info@springingredients.ru</textarea>
-            
-            <label for="feedbackContact">Контакт для обратной связи:</label>
-            <input type="text" id="feedbackContact" value="WhatsApp: +79250588988">
-
+            <!-- ... (все поля для текста остаются без изменений) ... -->
+            <label for="productName">Наименование товара:</label><input type="text" id="productName" value="Канцелярский набор «Light purple»">
+            <label for="sku">Артикул (SKU):</label><input type="text" id="sku" value="US003">
+            <label for="ean13">Штрихкод (EAN-13):</label><input type="text" id="ean13" value="6920250915012">
+            <label for="composition">Комплектация:</label><textarea id="composition" rows="5">1 х тетрадь B5, 1 х степлер, 1 х калькулятор, 1 х канцелярский нож, 1 х зажим для бумаги, 1 х выделители 6 шт. разных цветов в комплекте, 1 х ленточный корректор, 1 х шариковые ручки 6 шт в комплекте, 1 х шариковая ручка с 6-ю цветами, 1 х вечный карандаш, 1 х выделитель коричневый, 1 х шариковая ручка черная, 1 х гелевая ручка-роллер черная, 1 х коробка.</textarea>
+            <label for="origin">Страна происхождения:</label><input type="text" id="origin" value="Китай">
+            <label for="productionDate">Дата производства / Партия:</label><input type="text" id="productionDate" value="сентябрь 2025">
+            <label for="manufacturer">Производитель:</label><textarea id="manufacturer" rows="2">UNION SOURCE CO.,LTD, 12F Sellers Union Buliding, 288 Guanghua Road, National Hi-Tech Zone Ningbo, China 315048, КНР</textarea>
+            <label for="importer">Импортер / Ответственное лицо:</label><textarea id="importer" rows="3">ООО «Спринг», РФ, 121596, г. Москва, вн.тер.г. муниципальный округ Можайский, ул. Горбунова, д.2, стр.3, помещ. 33/2, ИНН 7733368052, ОГРН 1217700184800, Тел.: +7 (495) 032-02-97, e-mail: info@springingredients.ru</textarea>
+            <label for="feedbackContact">Контакт для обратной связи:</label><input type="text" id="feedbackContact" value="WhatsApp: +79250588988">
             <button type="button" onclick="generateLabel()">Обновить этикетку</button>
             <button type="button" onclick="window.print()">Печать</button>
         </form>
     </div>
-
     <div class="preview-container">
         <h2>Предпросмотр</h2>
         <div id="label-preview" class="label">
-             <div class="header-section">
-                <strong id="preview-productName"></strong>
-                <span id="preview-sku"></span>
-            </div>
-            <div class="barcode-section">
-                <svg id="barcode"></svg>
-            </div>
-            <div class="details-section">
+             <!-- ... (верхняя часть шаблона без изменений) ... -->
+             <div class="header-section"><strong id="preview-productName"></strong><span id="preview-sku"></span></div>
+             <div class="barcode-section"><svg id="barcode"></svg></div>
+             <div class="details-section">
                 <p><strong>Комплектация:</strong> <span id="preview-composition"></span></p>
                 <p><strong>Страна происхождения:</strong> <span id="preview-origin"></span></p>
                 <p><strong>Дата производства / Партия:</strong> <span id="preview-productionDate"></span></p>
                 <p><strong>Производитель:</strong> <span id="preview-manufacturer"></span></p>
                 <p><strong>Импортер/лицо для претензий в РФ:</strong> <span id="preview-importer"></span></p>
-                 
-                 <!-- УПРОЩЕННЫЙ ШАБЛОН -->
-                 <p>
-                    <strong>Обратная связь:</strong>
-                    <span id="feedback-content"></span>
-                 </p>
+                <p><strong>Обратная связь:</strong> <span id="feedback-content"></span></p>
+             </div>
 
-            </div>
-            <div class="footer-section">
-                <!-- Код иконок -->
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgODAiPjxwYXRoIGQ9Ik02NC42IDIzLjRjLTEuMi0xLTIuNi0xLjUtNC4yLTEuNWgtMTBjLTMuMSAwLTUuNiAyLjUtNS42IDUuNnYyNS4yYzAgMy4xIDIuNSA1LjYgNS42IDUuNmgxMGMxLjYgMCAzLS41IDQuMi0xLjUgMS4yLTEgMS45LTIuMyAxLjktMy45VjQ1LjFoLTguOHY1LjZoMy4xdjIuNWgtOC44VjI4LjFoOC44djIuNWgtMy4xdjUuNmg4LjhWMjcuM2MwLTEuNi0uNy0zLTEuOS0zLjlNOTguMSAyMS45SDcwLjNjLTEuNiAwLTMgLjUtNC4yIDEuNS0xLjIgMS0xLjkgMi4zLTEuOSAzLjl2MjUuNGMwIDEuNi43IDMgMS45IDMuOSAxLjIgMSAyLjYgMS41IDQuMiAxLjVoMjcuOGMxLjYgMCAzLS41IDQuMi0xLjVzMS45LTIuMyAxLjktMy45VjI3LjNjMC0xLjYtLjctMy0xLjktMy45LTEuMi0xLTIuNi0xLjUtNC4yLTEuNW0tMi45IDI1LjRoLTguOFYzMy4xaC0yLjV2MTQuMmgtOC44VjI4LjFoMjAuMXYxOS4yTTMxLjIgMjEuOUgyLjljLTEuNiAwLTMgLjUtNC4yIDEuNUMtMi41IDI0LjQtMyAyNS43LTMgMjcuM3YxMS4yaDguOHYtNS42SDBWMjguMWgyNS42djE5LjJoLTUuNnY1LjZoMTQuNFYyNy4zYzAtMS42LS43LTMtMS45LTMuOS0xLjItMS0yLjYtMS41LTQuMy0xLjUiLz48L3N2Zz4=" alt="EAC" class="icon">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNNDMuMyA4Ny44IDIyIDczLjJsLTEuNiAyLjcgMjEuMyAxNC42Yy41LjMgMSAuNSAxLjYuNXMxLjEtLjIgMS42LS41bDIxLjMtMTQuNi0xLjYtMi43LTIxLjMgMTQuNnoiLz48cGF0aCBkPSJtMjAuOSA3NC4zIDIuMS0xLjMgMTAuNyAxOC41LTIuMSAxLjN6bS0xNC0zNi41IDE0IDguMSAxMC43LTE4LjUtMTQtOC4xem01MC4zLTEwLjRMNjYuNSAzLjNsLTIuMSAzLjYgMTAuNyAxOC41IDIuMS0zLjZ6TTQ4LjEgNC41bDMuOCAyLjIgMS4zLTIuMi0zLjgtMi4yem0tNDEuMiAzMy4zIDMuOC0yLjItMS4zLTIuMi0zLjgtMi4yem0xNi4xIDM0LjUgLTMuOC0yLjItMS4zIDIuMiAzLjggMi4yeiIvPjxwYXRoIGQ9Ik01MCAwQzIyLjQgMCAwIDIyLjQgMCA1MHMyMi40IDUwIDUwIDUwIDUwLTIyLjQgNTAtNTBTNzcuNiAwIDUwIDB6bTAgOTVDMjUuMiA5NSA1IDc4LjggNSA1MFMyNS4yIDUgNTAgNXM0NSAyMC4yIDQ1IDQ1LTIwLjIgNDUtNDUgNDV6Ii8+PHBhdGggZD0iTTUzLjEgMzEuNUg0MS44djM3aDExLjN2LTUuMkg0N1Y1OGg1LjZ2LTUuMkg0N1YzNi43aDYuMXpNNzIgMzEuNUg2M2wtNC4yIDE4LjMtNC4yLTE4LjNINDUuMmw4LjkgMzdoOC45ek0zNC4yIDMxLjVoLTkuOWwtNC41IDIxLjNjLS4zIDEuMi0uNCAyLjMtLjQgMy40IDAgMy4zIDEuNiA0LjkgNC45IDQuOSAxLjkgMCAzLjMtLjYgNC4yLTEuOGwuNi0zLjhoNS4zYy0xIDUuMy00LjEgOC05LjQgOC02LjEgMC05LjItMy44LTkuMi0xMC44IDAtMi44LjYtNS42IDEuOC0xMC40bDUuLTIzLjNoMTEuMXY1LjJoLTUuNGwtLjggNC4yaDYuMXoiLz48L3N2Zz4=" alt="PAP 20" class="icon">
-            </div>
+             <!-- ИЗМЕНЕНИЕ: Контейнер для значков теперь пустой и имеет ID -->
+             <div class="footer-section" id="preview-icons">
+                <!-- Сюда значки будет добавлять JavaScript -->
+             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script src="script.js"></script>
 </body>
