@@ -1,5 +1,7 @@
-// === КОНФИГУРАЦИЯ FIREBASE ===
-// ВАЖНО: ЗАМЕНИТЕ ЭТИ ДАННЫЕ НА ВАШИ ИЗ КОНСОЛИ FIREBASE
+// ===================================================
+// ===       КОНФИГУРАЦИЯ FIREBASE                ===
+// ===   !!! ЗАМЕНИТЕ ЭТИ ДАННЫЕ СВОИМИ !!!       ===
+// ===================================================
 const firebaseConfig = {
   apiKey: "AIzaSyAYEn5CN91w6B4YoTcWrW42qKdJfRm9k7s",
   authDomain: "generatesticker.firebaseapp.com",
@@ -9,7 +11,6 @@ const firebaseConfig = {
   appId: "1:619341342031:web:7d861b6ab2224d90e0113a",
   measurementId: "G-FNSKM2K33W"
 };
-
 // ===================================================
 
 // Инициализация Firebase
