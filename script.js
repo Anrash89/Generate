@@ -10,6 +10,8 @@ const firebaseConfig = {
   measurementId: "G-FNSKM2K33W"
 };
 
+// ===================================================
+
 // Инициализация Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -33,12 +35,11 @@ const authStatus = document.getElementById('auth-status');
 
 auth.onAuthStateChanged(user => {
     if (user) {
-        // Пользователь вошел в систему
         loginView.style.display = 'none';
         userView.style.display = 'block';
         userEmailSpan.textContent = user.email;
+        authStatus.textContent = '';
     } else {
-        // Пользователь вышел
         loginView.style.display = 'block';
         userView.style.display = 'none';
         userEmailSpan.textContent = '';
@@ -48,6 +49,7 @@ auth.onAuthStateChanged(user => {
 function registerUser() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    authStatus.textContent = '';
     auth.createUserWithEmailAndPassword(email, password)
         .catch(error => { authStatus.textContent = `Ошибка регистрации: ${error.message}`; });
 }
@@ -55,6 +57,7 @@ function registerUser() {
 function loginUser() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    authStatus.textContent = '';
     auth.signInWithEmailAndPassword(email, password)
         .catch(error => { authStatus.textContent = `Ошибка входа: ${error.message}`; });
 }
@@ -64,49 +67,57 @@ function logoutUser() {
 }
 
 // === ФУНКЦИИ ДЛЯ РАБОТЫ С БАЗОЙ ДАННЫХ (FIRESTORE) ===
+function showStatusMessage(elementId, message, isError = false) {
+    const statusDiv = document.getElementById(elementId);
+    statusDiv.textContent = message;
+    statusDiv.className = `status-message ${isError ? 'error' : 'success'}`;
+    setTimeout(() => { statusDiv.textContent = ''; statusDiv.className = 'status-message'; }, 4000);
+}
+
 
 function saveLabel() {
     const sku = document.getElementById('sku').value.trim();
-    const statusDiv = document.getElementById('save-status');
     const currentUser = auth.currentUser;
 
     if (!currentUser) {
-        statusDiv.textContent = 'Ошибка: Вы должны войти в систему для сохранения.';
+        showStatusMessage('save-status', 'Ошибка: Вы должны войти в систему для сохранения.', true);
         return;
     }
     if (!sku) {
-        statusDiv.textContent = 'Ошибка: Артикул (SKU) не может быть пустым!';
+        showStatusMessage('save-status', 'Ошибка: Артикул (SKU) не может быть пустым!', true);
         return;
     }
 
     const dataToSave = collectLabelData();
-    // Добавляем метаданные
     dataToSave.lastUpdatedBy = currentUser.email;
     dataToSave.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
 
-    // Используем .set с { merge: true }, чтобы обновить или создать
-    stickersCollection.doc(sku).set(dataToSave, { merge: true })
-        .then(() => {
-            // Устанавливаем автора только при первом сохранении
-            stickersCollection.doc(sku).set({ 
-                createdBy: currentUser.email,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-             }, { merge: true });
-            
-            statusDiv.textContent = `Стикер "${sku}" успешно сохранен в базу.`;
-            setTimeout(() => statusDiv.textContent = '', 3000);
-        })
-        .catch(error => {
-            statusDiv.textContent = `Ошибка сохранения: ${error.message}`;
-        });
+    const docRef = stickersCollection.doc(sku);
+
+    docRef.get().then(doc => {
+        if (!doc.exists) {
+            // Если документа нет, добавляем поля createdBy и createdAt
+            dataToSave.createdBy = currentUser.email;
+            dataToSave.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+        }
+
+        docRef.set(dataToSave, { merge: true })
+            .then(() => {
+                showStatusMessage('save-status', `Стикер "${sku}" успешно сохранен в базу.`);
+                loadLabel(false); // Перезагружаем данные для обновления мета-информации
+            })
+            .catch(error => {
+                showStatusMessage('save-status', `Ошибка сохранения: ${error.message}`, true);
+            });
+    });
 }
 
-function loadLabel() {
-    const skuToLoad = document.getElementById('loadSku').value.trim();
-    const statusDiv = document.getElementById('load-status');
 
+function loadLabel(showAlerts = true) {
+    const skuToLoad = showAlerts ? document.getElementById('loadSku').value.trim() : document.getElementById('sku').value.trim();
+    
     if (!skuToLoad) {
-        statusDiv.textContent = 'Введите артикул для загрузки!';
+        if (showAlerts) showStatusMessage('load-status', 'Введите артикул для загрузки!', true);
         return;
     }
 
@@ -117,23 +128,21 @@ function loadLabel() {
                 populateForm(data);
                 generateLabel();
                 
-                // Отображаем мета-информацию
                 document.getElementById('meta-created').textContent = `${data.createdBy || 'N/A'}`;
-                document.getElementById('meta-updated').textContent = `${data.lastUpdatedBy || 'N/A'} (${data.updatedAt ? data.updatedAt.toDate().toLocaleString() : ''})`;
+                const updatedDate = data.updatedAt ? data.updatedAt.toDate().toLocaleString('ru-RU') : '';
+                document.getElementById('meta-updated').textContent = `${data.lastUpdatedBy || 'N/A'} (${updatedDate})`;
 
-                statusDiv.textContent = `Стикер "${skuToLoad}" загружен.`;
+                if (showAlerts) showStatusMessage('load-status', `Стикер "${skuToLoad}" загружен.`);
             } else {
-                statusDiv.textContent = `Стикер с артикулом "${skuToLoad}" не найден.`;
+                 if (showAlerts) showStatusMessage('load-status', `Стикер с артикулом "${skuToLoad}" не найден.`, true);
             }
-             setTimeout(() => statusDiv.textContent = '', 3000);
         })
         .catch(error => {
-            statusDiv.textContent = `Ошибка загрузки: ${error.message}`;
+            if (showAlerts) showStatusMessage('load-status', `Ошибка загрузки: ${error.message}`, true);
         });
 }
 
 // === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ (сбор и заполнение данных) ===
-
 function collectLabelData() {
     const data = {};
     allInputIds.forEach(id => {
@@ -162,9 +171,66 @@ function populateForm(data) {
     }
 }
 
-// === ОСНОВНАЯ ФУНКЦИЯ ГЕНЕРАЦИИ (без изменений) ===
-function generateLabel() { /* ... код этой функции остается прежним ... */ }
-function toggleAutoHeight() { /* ... код этой функции остается прежним ... */ }
+// === ОСНОВНЫЕ ФУНКЦИИ ГЕНЕРАЦИИ ===
+function pixelsToMm(px) { return px * 25.4 / 96; }
+
+function generateLabel() {
+    const labelWidth = document.getElementById('labelWidth').value;
+    const labelHeightInput = document.getElementById('labelHeight');
+    const fontSize = document.getElementById('fontSize').value;
+    const iconSize = document.getElementById('iconSize').value;
+    const autoHeightEnabled = document.getElementById('autoHeight').checked;
+    const labelPreview = document.getElementById('label-preview');
+
+    labelPreview.style.width = `${labelWidth}mm`;
+    labelPreview.style.fontSize = `${fontSize}pt`;
+    labelPreview.style.height = 'auto';
+
+    const textFields = ['productName', 'composition', 'origin', 'productionDate', 'manufacturer', 'importer', 'storageConditions', 'shelfLife', 'compliance', 'warning'];
+    textFields.forEach(id => {
+        const element = document.getElementById(`preview-${id}`);
+        if (element) {
+            element.innerText = document.getElementById(id).value;
+        }
+    });
+    document.getElementById('preview-sku').innerText = `Артикул: ${document.getElementById('sku').value}`;
+    const staticPhrase = "Свяжитесь с нами, если что-то пошло не так с товаром или доставкой - мы быстро решим вопрос в рамках законодательства РФ. ";
+    document.getElementById('feedback-content').innerText = staticPhrase + document.getElementById('feedbackContact').value;
+
+    const ean13 = document.getElementById('ean13').value;
+    if (ean13) {
+        try { JsBarcode("#barcode", ean13, { format: "EAN13", lineColor: "#000", width: 1.5, height: 30, displayValue: true, fontSize: 12 }); } catch (e) { console.error("Barcode error:", e); }
+    } else {
+        document.getElementById('barcode').innerHTML = '';
+    }
+    
+    const iconContainer = document.getElementById('preview-icons');
+    iconContainer.innerHTML = '';
+    const checkedIcons = document.querySelectorAll('input[name="icons"]:checked');
+    checkedIcons.forEach(checkbox => {
+        const img = document.createElement('img');
+        img.src = 'icons/' + checkbox.value;
+        img.alt = checkbox.value.split('.')[0];
+        img.className = 'icon';
+        img.style.height = `${iconSize}mm`;
+        img.style.width = 'auto';
+        iconContainer.appendChild(img);
+    });
+
+    if (autoHeightEnabled) {
+        labelPreview.style.height = 'auto';
+        const contentHeightPx = labelPreview.scrollHeight;
+        labelPreview.style.height = `${contentHeightPx}px`;
+        labelHeightInput.value = pixelsToMm(contentHeightPx).toFixed(1);
+    } else {
+        labelPreview.style.height = `${labelHeightInput.value}mm`;
+    }
+}
+
+function toggleAutoHeight() {
+    document.getElementById('labelHeight').disabled = document.getElementById('autoHeight').checked;
+    generateLabel();
+}
 
 window.onload = () => {
     document.querySelectorAll('input, textarea').forEach(input => {

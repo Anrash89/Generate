@@ -12,8 +12,15 @@
         <div class="card" id="auth-section">
             <div id="login-view">
                 <h2>Вход или Регистрация</h2>
-                <div class="form-group"><label for="email">Email:</label><input type="email" id="email" placeholder="user@example.com"></div>
-                <div class="form-group"><label for="password">Пароль:</label><input type="password" id="password" placeholder="******"></div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="user@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" placeholder="******">
+                </div>
+                <div id="auth-status" class="status-message"></div>
                 <div class="button-group">
                     <button type="button" onclick="loginUser()">Войти</button>
                     <button type="button" onclick="registerUser()">Регистрация</button>
@@ -23,7 +30,6 @@
                 <p>Вы вошли как: <strong id="user-email"></strong></p>
                 <button type="button" onclick="logoutUser()">Выйти</button>
             </div>
-            <div id="auth-status" class="status-message"></div>
         </div>
 
         <!-- БЛОК ЗАГРУЗКИ -->
@@ -33,15 +39,15 @@
                 <label for="loadSku">Артикул для загрузки:</label>
                 <input type="text" id="loadSku" placeholder="Введите артикул (SKU)">
             </div>
+             <div id="load-status" class="status-message"></div>
             <button type="button" onclick="loadLabel()">Загрузить из Базы</button>
-            <div id="load-status" class="status-message"></div>
         </div>
 
         <!-- ОСНОВНОЙ ГЕНЕРАТОР -->
         <div class="card">
             <h1>Генератор этикеток</h1>
             <form id="label-form">
-                <!-- Настройки -->
+                
                 <h3>Настройки этикетки</h3>
                 <div class="settings-grid">
                     <div><label for="labelWidth">Ширина (мм):</label><input type="number" id="labelWidth" value="58"></div>
@@ -51,44 +57,75 @@
                 </div>
                 <div class="autofit-container"><input type="checkbox" id="autoHeight" checked onchange="toggleAutoHeight()"><label for="autoHeight">Автоподбор высоты</label></div>
                 <hr>
+
+                <h3>Значки</h3>
+                <div class="icons-selection-container">
+                    <div><input type="checkbox" id="icon-eac" name="icons" value="eac.png" checked><label for="icon-eac">EAC</label></div>
+                    <div><input type="checkbox" id="icon-pap20" name="icons" value="pap20.png" checked><label for="icon-pap20">PAP 20</label></div>
+                    <div><input type="checkbox" id="icon-pp05" name="icons" value="pp05.png"><label for="icon-pp05">PP 05</label></div>
+                    <div><input type="checkbox" id="icon-abs9" name="icons" value="abs9.png"><label for="icon-abs9">ABS 9</label></div>
+                    <div><input type="checkbox" id="icon-ps06" name="icons" value="ps06.png"><label for="icon-ps06">PS 06</label></div>
+                    <div><input type="checkbox" id="icon-pap21" name="icons" value="pap21.png"><label for="icon-pap21">PAP 21</label></div>
+                </div>
+                <hr>
                 
-                <!-- Содержимое -->
                 <h3>Содержимое этикетки</h3>
-                <!-- ... все поля для ввода текста остаются здесь ... -->
                 <label for="productName">Наименование товара:</label><input type="text" id="productName" value="Школьно-письменные принадлежности - Канцелярский набор «Ink black»">
                 <label for="sku">Артикул (SKU):</label><input type="text" id="sku" value="US005">
                 <label for="ean13">Штрихкод (EAN-13):</label><input type="text" id="ean13" value="6920250915012">
-                <label for="composition">Комплектация:</label><textarea id="composition" rows="5">1 х тетрадь А5...</textarea>
-                <!-- ... и так далее, все ваши поля textarea и input ... -->
-
-                <!-- ИНФОРМАЦИЯ О ЗАПИСИ (заполняется автоматически) -->
+                <label for="composition">Комплектация:</label><textarea id="composition" rows="5">1 х тетрадь А5, 1 х степлер с 320 скобами, 1 х настольный калькулятор с батареей типа ААА и солнечной панелью, 1 х канцелярский нож, 1 х зажим для бумаги, 1 х набор выделителей 6 шт. разных цветов, 1 х ленточный корректор, 1 х набор гелевых черных ручек 6 шт, 1 х шариковая ручка с 6-ю цветами, 1 х гелевая черная ручка, 1 х коричневая ручка-роллер, 1 х вечный черный карандаш, 1 х ластик, 1 х картонная коробка.</textarea>
+                <label for="origin">Страна происхождения:</label><input type="text" id="origin" value="Китай">
+                <label for="productionDate">Дата производства / Партия:</label><input type="text" id="productionDate" value="сентябрь 2025">
+                <label for="manufacturer">Производитель:</label><textarea id="manufacturer" rows="2">UNION SOURCE CO.,LTD, Адрес: 12F. Адрес: Sellers Union Buliding, 288 Guanghua Road, National Hi-Tech Zone Ningbo, China 315048, КНР</textarea>
+                <label for="importer">Импортер / Ответственное лицо:</label><textarea id="importer" rows="3">ООО «Спринг», РФ, 121596, г. Москва, вн.тер.г. муниципальный округ Можайский, ул. Горбунова, д.2, стр.3, помещ. 33/2, ИНН 7733368052, ОГРН 1217700184800, Тел.: +7 (495) 032-02-97, e-mail: info@springingredients.ru</textarea>
+                <label for="storageConditions">Условия хранения:</label><textarea id="storageConditions" rows="3">продукция должна храниться в сухом, проветриваемом помещении и должна быть защищена от прямого попадания солнечных лучей и атмосферных воздействий и загрязнений.</textarea>
+                <label for="shelfLife">Срок службы и информация:</label><textarea id="shelfLife" rows="5">Срок хранения, срок службы (годности), гарантийный срок не установлен. Калькулятор модели US005. Правил по хранению и эффективному и безопасному использованию калькулятора нет. Калькулятор работает от батареи или солнечной панели. Батарея входит в набор.</textarea>
+                <label for="compliance">Информация о соответствии:</label><textarea id="compliance" rows="4">Калькулятор соответствует требованиям ТР ТС 037/2016. Упаковка картонная соответствует требованиям ТР ТС 005/2011. Остальные товары соответствуют требованиям ТР ТС 007/2011.</textarea>
+                <label for="warning">Внимание:</label><input type="text" id="warning" value="предназначено для детей старше 3 лет.">
+                <label for="feedbackContact">Контакт для обратной связи:</label><input type="text" id="feedbackContact" value="WhatsApp: +79250588988">
+                
                 <div class="meta-info">
                     <p>Создал: <span id="meta-created">N/A</span></p>
                     <p>Последнее изменение: <span id="meta-updated">N/A</span></p>
                 </div>
 
-                <!-- Кнопки -->
+                <div id="save-status" class="status-message"></div>
                 <div class="button-group">
                     <button type="button" onclick="generateLabel()">Обновить</button>
                     <button type="button" class="primary-button" onclick="saveLabel()">Сохранить в Базу</button>
                     <button type="button" onclick="window.print()">Печать</button>
                 </div>
-                <div id="save-status" class="status-message"></div>
             </form>
         </div>
     </div>
 
-    <!-- Предпросмотр (без изменений) -->
     <div class="preview-container">
-        <!-- ... -->
+        <h2>Предпросмотр</h2>
+        <div id="label-preview" class="label">
+             <div class="header-section"><strong id="preview-productName"></strong><span id="preview-sku"></span></div>
+             <div class="barcode-section"><svg id="barcode"></svg></div>
+             <div class="details-section">
+                <p><strong>Комплектация:</strong> <span id="preview-composition"></span></p>
+                <p><strong>Страна происхождения:</strong> <span id="preview-origin"></span></p>
+                <p><strong>Дата производства / Партия:</strong> <span id="preview-productionDate"></span></p>
+                <p><strong>Производитель:</strong> <span id="preview-manufacturer"></span></p>
+                <p><strong>Импортер/лицо для претензий в РФ:</strong> <span id="preview-importer"></span></p>
+                <p><strong>Условия хранения:</strong> <span id="preview-storageConditions"></span></p>
+                <p><span id="preview-shelfLife"></span></p>
+                <p><span id="preview-compliance"></span></p>
+                <p><strong>Внимание:</strong> <span id="preview-warning"></span></p>
+                <p><strong>Обратная связь:</strong> <span id="feedback-content"></span></p>
+             </div>
+             <div class="footer-section" id="preview-icons"></div>
+        </div>
     </div>
 
-    <!-- СКРИПТЫ FIREBASE -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    
-    <!-- JSBARCODE и наш скрипт -->
+
+    <!-- Other Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script src="script.js"></script>
 </body>
