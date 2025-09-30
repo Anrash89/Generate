@@ -5,7 +5,6 @@ function generateLabel() {
     const labelWidth = document.getElementById('labelWidth').value;
     const labelHeightInput = document.getElementById('labelHeight');
     const fontSize = document.getElementById('fontSize').value;
-    // Считываем новое значение размера иконок
     const iconSize = document.getElementById('iconSize').value; 
     const autoHeightEnabled = document.getElementById('autoHeight').checked;
     const labelPreview = document.getElementById('label-preview');
@@ -47,9 +46,11 @@ function generateLabel() {
         img.src = 'icons/' + checkbox.value; 
         img.alt = checkbox.value.split('.')[0]; 
         img.className = 'icon'; 
-        // Динамически задаем размер каждой иконке
-        img.style.width = `${iconSize}mm`;
+        
+        // Задаем только высоту, а ширина подстроится сама, сохраняя пропорции
         img.style.height = `${iconSize}mm`;
+        img.style.width = 'auto';
+        
         iconContainer.appendChild(img);
     });
 
@@ -70,8 +71,6 @@ function toggleAutoHeight() {
 }
 
 window.onload = () => {
-    // Этот код уже отслеживает изменения во всех полях <input>,
-    // поэтому для нового поля ничего добавлять не нужно.
     document.querySelectorAll('input, textarea').forEach(input => {
         input.addEventListener('input', generateLabel); 
         input.addEventListener('change', generateLabel); 

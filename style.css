@@ -44,7 +44,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Обновленная сетка для 4 элементов */
 .settings-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -122,12 +121,12 @@ hr {
     display: flex; 
     justify-content: flex-end; 
     flex-wrap: wrap; 
-    gap: 1.5mm; 
+    gap: 1.5mm;
+    align-items: center;
 }
-
-/* Фиксированный размер убран, т.к. он теперь задается в JS */
 .icon {
-    /* width и height теперь задаются динамически */
+    /* width и height теперь задаются динамически в JS */
+    vertical-align: middle;
 }
 
 /* --- Стили для печати --- */
@@ -173,4 +172,4 @@ hr {
     .settings-grid {
         grid-template-columns: 1fr;
     }
-}
+}```
