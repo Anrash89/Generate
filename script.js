@@ -5,6 +5,8 @@ function generateLabel() {
     const labelWidth = document.getElementById('labelWidth').value;
     const labelHeightInput = document.getElementById('labelHeight');
     const fontSize = document.getElementById('fontSize').value;
+    // Считываем новое значение размера иконок
+    const iconSize = document.getElementById('iconSize').value; 
     const autoHeightEnabled = document.getElementById('autoHeight').checked;
     const labelPreview = document.getElementById('label-preview');
 
@@ -13,7 +15,7 @@ function generateLabel() {
     labelPreview.style.fontSize = `${fontSize}pt`;
     labelPreview.style.height = 'auto'; 
     
-    // Заполняем стандартные и новые поля
+    // Заполняем текстовые поля
     const allFields = [
         'productName', 'composition', 'origin', 'productionDate', 
         'manufacturer', 'importer', 'storageConditions', 'shelfLife', 
@@ -36,15 +38,18 @@ function generateLabel() {
 
     // --- Динамическое добавление значков ---
     const iconContainer = document.getElementById('preview-icons');
-    iconContainer.innerHTML = ''; // Очищаем контейнер перед добавлением
+    iconContainer.innerHTML = ''; 
 
     const checkedIcons = document.querySelectorAll('input[name="icons"]:checked');
     
     checkedIcons.forEach(checkbox => {
         const img = document.createElement('img');
-        img.src = 'icons/' + checkbox.value; // Путь к файлу: 'icons/...'
+        img.src = 'icons/' + checkbox.value; 
         img.alt = checkbox.value.split('.')[0]; 
-        img.className = 'icon'; // Применяем стили размера из CSS
+        img.className = 'icon'; 
+        // Динамически задаем размер каждой иконке
+        img.style.width = `${iconSize}mm`;
+        img.style.height = `${iconSize}mm`;
         iconContainer.appendChild(img);
     });
 
@@ -65,6 +70,8 @@ function toggleAutoHeight() {
 }
 
 window.onload = () => {
+    // Этот код уже отслеживает изменения во всех полях <input>,
+    // поэтому для нового поля ничего добавлять не нужно.
     document.querySelectorAll('input, textarea').forEach(input => {
         input.addEventListener('input', generateLabel); 
         input.addEventListener('change', generateLabel); 
