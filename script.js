@@ -13,11 +13,19 @@ function generateLabel() {
     labelPreview.style.fontSize = `${fontSize}pt`;
     labelPreview.style.height = 'auto'; 
     
-    // Заполняем стандартные поля
-    const standardFields = ['productName', 'composition', 'origin', 'productionDate', 'manufacturer', 'importer'];
-    standardFields.forEach(id => {
-        document.getElementById(`preview-${id}`).innerText = document.getElementById(id).value;
+    // Заполняем стандартные и новые поля
+    const allFields = [
+        'productName', 'composition', 'origin', 'productionDate', 
+        'manufacturer', 'importer', 'storageConditions', 'shelfLife', 
+        'compliance', 'warning'
+    ];
+    allFields.forEach(id => {
+        const element = document.getElementById(`preview-${id}`);
+        if (element) {
+            element.innerText = document.getElementById(id).value;
+        }
     });
+    
     document.getElementById('preview-sku').innerText = `Артикул: ${document.getElementById('sku').value}`;
     const staticPhrase = "Свяжитесь с нами, если что-то пошло не так с товаром или доставкой - мы быстро решим вопрос в рамках законодательства РФ. ";
     document.getElementById('feedback-content').innerText = staticPhrase + document.getElementById('feedbackContact').value;
@@ -26,7 +34,7 @@ function generateLabel() {
     const ean13 = document.getElementById('ean13').value;
     if (ean13) { JsBarcode("#barcode", ean13, { format: "EAN13", lineColor: "#000", width: 1.5, height: 30, displayValue: true, fontSize: 12 }); }
 
-    // --- НОВЫЙ БЛОК: Динамическое добавление значков ---
+    // --- Динамическое добавление значков ---
     const iconContainer = document.getElementById('preview-icons');
     iconContainer.innerHTML = ''; // Очищаем контейнер перед добавлением
 
@@ -34,12 +42,11 @@ function generateLabel() {
     
     checkedIcons.forEach(checkbox => {
         const img = document.createElement('img');
-        img.src = 'icons/' + checkbox.value; // Путь к файлу: 'icons/eac.png'
+        img.src = 'icons/' + checkbox.value; // Путь к файлу: 'icons/...'
         img.alt = checkbox.value.split('.')[0]; 
         img.className = 'icon'; // Применяем стили размера из CSS
         iconContainer.appendChild(img);
     });
-    // --- КОНЕЦ НОВОГО БЛОКА ---
 
     // === ЛОГИКА АВТОПОДБОРА ВЫСОТЫ ===
     if (autoHeightEnabled) {
@@ -58,10 +65,9 @@ function toggleAutoHeight() {
 }
 
 window.onload = () => {
-    // Обновляем слушатели, чтобы они реагировали и на чекбоксы
     document.querySelectorAll('input, textarea').forEach(input => {
-        input.addEventListener('input', generateLabel); // Для текстовых полей
-        input.addEventListener('change', generateLabel); // Для чекбоксов
+        input.addEventListener('input', generateLabel); 
+        input.addEventListener('change', generateLabel); 
     });
     toggleAutoHeight();
 };

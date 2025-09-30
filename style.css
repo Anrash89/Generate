@@ -9,7 +9,7 @@ body {
 
 .editor-container {
     width: 45%;
-    min-width: 400px; /* Добавим минимальную ширину для удобства */
+    min-width: 400px;
 }
 .preview-container {
     width: 50%;
@@ -54,6 +54,18 @@ button:hover {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+/* Стили для контейнера выбора иконок */
+.icons-selection-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+.icons-selection-container div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 hr {
@@ -108,11 +120,15 @@ hr {
     margin-top: auto;
     text-align: right;
     padding-top: 1mm;
+    display: flex; /* Добавлено для лучшего контроля */
+    justify-content: flex-end; /* Выравнивание иконок по правому краю */
+    flex-wrap: wrap; /* Позволяет иконкам переноситься на новую строку */
+    gap: 1.5mm; /* Пространство между иконками */
 }
 .icon {
     width: 7mm;
     height: 7mm;
-    margin-left: 1.5mm;
+    /* margin-left убран, используется gap в родителе */
 }
 
 /* --- Стили для печати --- */
@@ -122,45 +138,40 @@ hr {
         margin: 0;
         background-color: #fff;
     }
-    .editor-container, .preview-container h2 {
+    .editor-container, .preview-container h2, button {
         display: none;
+    }
+    .preview-container {
+        width: 100%;
     }
     .label {
         border: none;
         margin: 0;
         padding: 0;
         page-break-after: always;
+        width: 100% !important; /* Важно для корректной ширины при печати */
+        height: auto !important; /* Высота определяется контентом */
     }
 }
 
-/* 
-===================================================================
---- НОВЫЙ БЛОК: СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ---
-===================================================================
-*/
-/* Этот блок будет применяться только на экранах шириной 900px или меньше */
+/* --- Стили для мобильных устройств --- */
 @media (max-width: 900px) {
     body {
-        /* Меняем направление flex-контейнера на вертикальное (друг под другом) */
         flex-direction: column;
-        /* Выравниваем элементы по центру для лучшего вида */
         align-items: center;
     }
 
     .editor-container,
     .preview-container {
-        /* Заставляем каждый блок занимать почти всю ширину экрана */
         width: 95%;
-        min-width: unset; /* Сбрасываем минимальную ширину */
+        min-width: unset;
     }
     
     .editor-container {
-         /* Добавляем отступ снизу, чтобы он не слипался с предпросмотром */
         margin-bottom: 30px;
     }
     
     .settings-grid {
-        /* На маленьких экранах настройки тоже будут идти друг под другом */
         grid-template-columns: 1fr;
     }
 }
