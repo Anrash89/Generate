@@ -137,15 +137,30 @@ hr {
 }
 
 /* Стили для блока пользователя */
+#user-view {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 #user-view p {
     margin: 0;
-    padding: 10px 0;
+    padding: 5px 0;
 }
 #user-view button {
     background-color: #dc3545;
+    margin-top: 0;
 }
 #user-view button:hover {
     background-color: #c82333;
+}
+
+.list-link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+}
+.list-link:hover {
+    text-decoration: underline;
 }
 
 /* Стили для мета-информации */
@@ -231,7 +246,7 @@ hr {
         margin: 0;
         background-color: #fff;
     }
-    .editor-container, .preview-container h2, button {
+    .editor-container, .preview-container h2, button, .list-container {
         display: none;
     }
     .preview-container {
@@ -270,4 +285,69 @@ hr {
     .button-group {
         flex-direction: column;
     }
+}
+
+/*
+=========================================================
+===   НОВЫЕ СТИЛИ ДЛЯ СТРАНИЦЫ СО СПИСКОМ (list.html) ===
+=========================================================
+*/
+.list-container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.back-link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.table-wrapper {
+    overflow-x: auto; /* Позволяет таблице скроллиться по горизонтали на маленьких экранах */
+}
+
+.sticker-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.sticker-table th, .sticker-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.sticker-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.sticker-table tbody tr:nth-of-type(even) {
+    background-color: #f9f9f9;
+}
+
+.sticker-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.sticker-table td a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.sticker-table td a:hover {
+    text-decoration: underline;
 }

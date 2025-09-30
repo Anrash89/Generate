@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список стикеров</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="list-container">
+        <div class="card">
+            <div class="list-header">
+                <h1>Сохраненные стикеры</h1>
+                <a href="index.html" class="back-link">&larr; Вернуться к генератору</a>
+            </div>
+            <div id="auth-message" style="display: none;" class="status-message error">
+                Пожалуйста, <a href="index.html">войдите в систему</a> на главной странице, чтобы увидеть список.
+            </div>
+            <div class="table-wrapper">
+                <table class="sticker-table">
+                    <thead>
+                        <tr>
+                            <th>Артикул (SKU)</th>
+                            <th>Штрихкод (EAN-13)</th>
+                            <th>Наименование товара</th>
+                            <th>Дата обновления</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stickers-list-body">
+                        <!-- Данные будут загружены сюда -->
+                        <tr>
+                            <td colspan="4">Загрузка данных...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Наш новый скрипт для этой страницы -->
+    <script src="list.js"></script>
+</body>
+</html>

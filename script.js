@@ -19,7 +19,7 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const stickersCollection = db.collection("stickers");
 
-// === СПИСОК ID ВСЕХ ПОЛЕЙ ДЛЯ УДОБСТВА ===
+// === СПИСОК ID ВСЕХ ПОЛЕЙ (без изменений) ===
 const allInputIds = [
     'labelWidth', 'labelHeight', 'fontSize', 'iconSize', 'autoHeight',
     'productName', 'sku', 'ean13', 'composition', 'origin', 'productionDate',
@@ -40,13 +40,24 @@ auth.onAuthStateChanged(user => {
         userView.style.display = 'block';
         userEmailSpan.textContent = user.email;
         authStatus.textContent = '';
+        
+        // === ИЗМЕНЕНИЕ: ПРОВЕРЯЕМ URL НА НАЛИЧИЕ АРТИКУЛА ===
+        const urlParams = new URLSearchParams(window.location.search);
+        const skuFromUrl = urlParams.get('sku');
+        if (skuFromUrl) {
+            document.getElementById('loadSku').value = skuFromUrl;
+            loadLabel();
+            // Очищаем URL, чтобы при обновлении страницы стикер не загружался снова
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
     } else {
         loginView.style.display = 'block';
         userView.style.display = 'none';
         userEmailSpan.textContent = '';
     }
 });
-
+// ... остальные функции (registerUser, loginUser, logoutUser, saveLabel, и т.д.) без изменений
 function registerUser() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -67,7 +78,6 @@ function logoutUser() {
     auth.signOut();
 }
 
-// === ФУНКЦИИ ДЛЯ РАБОТЫ С БАЗОЙ ДАННЫХ (FIRESTORE) ===
 function showStatusMessage(elementId, message, isError = false) {
     const statusDiv = document.getElementById(elementId);
     statusDiv.textContent = message;
@@ -97,15 +107,15 @@ function saveLabel() {
 
     docRef.get().then(doc => {
         if (!doc.exists) {
-            // Если документа нет, добавляем поля createdBy и createdAt
             dataToSave.createdBy = currentUser.email;
             dataToSave.createdAt = firebase.firestore.FieldValue.serverTimestamp();
         }
-
+        // set с merge:true создаст документ, если его нет, или обновит, если он есть.
+        // Это как раз то, что вам нужно для "перезаписи".
         docRef.set(dataToSave, { merge: true })
             .then(() => {
                 showStatusMessage('save-status', `Стикер "${sku}" успешно сохранен в базу.`);
-                loadLabel(false); // Перезагружаем данные для обновления мета-информации
+                loadLabel(false);
             })
             .catch(error => {
                 showStatusMessage('save-status', `Ошибка сохранения: ${error.message}`, true);
@@ -143,7 +153,6 @@ function loadLabel(showAlerts = true) {
         });
 }
 
-// === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ (сбор и заполнение данных) ===
 function collectLabelData() {
     const data = {};
     allInputIds.forEach(id => {
@@ -172,10 +181,10 @@ function populateForm(data) {
     }
 }
 
-// === ОСНОВНЫЕ ФУНКЦИИ ГЕНЕРАЦИИ ===
 function pixelsToMm(px) { return px * 25.4 / 96; }
 
 function generateLabel() {
+    // ... эта функция остается без изменений
     const labelWidth = document.getElementById('labelWidth').value;
     const labelHeightInput = document.getElementById('labelHeight');
     const fontSize = document.getElementById('fontSize').value;
@@ -238,5 +247,5 @@ window.onload = () => {
         input.addEventListener('input', generateLabel);
         input.addEventListener('change', generateLabel);
     });
-    toggleAutoHeight();
+    generateLabel(); // Запускаем один раз, чтобы предпросмотр не был пустым
 };
