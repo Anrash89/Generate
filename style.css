@@ -10,9 +10,20 @@ body {
 .editor-container {
     width: 45%;
     min-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Расстояние между карточками */
 }
 .preview-container {
     width: 50%;
+}
+
+/* Стилизация карточек */
+.card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 form {
@@ -20,6 +31,16 @@ form {
     flex-direction: column;
     gap: 10px;
 }
+
+.form-group {
+    margin-bottom: 10px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
 
 input, textarea {
     padding: 8px;
@@ -32,16 +53,33 @@ input, textarea {
 button {
     padding: 10px 15px;
     border: none;
-    background-color: #007bff;
+    background-color: #5c6ac4;
     color: white;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
     margin-top: 10px;
+    transition: background-color 0.2s;
 }
 
 button:hover {
+    background-color: #4a559f;
+}
+
+.primary-button {
+    background-color: #007bff;
+}
+.primary-button:hover {
     background-color: #0056b3;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+.button-group button {
+    flex-grow: 1; /* Кнопки занимают равное пространство */
 }
 
 .settings-grid {
@@ -71,6 +109,64 @@ hr {
     border: none;
     border-top: 1px solid #ddd;
     margin: 15px 0;
+}
+
+/* Стили для сообщений о статусе */
+.status-message {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    min-height: 1.5em;
+    transition: all 0.3s;
+}
+.status-message:empty {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+.status-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+.status-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Стили для блока пользователя */
+#user-view p {
+    margin: 0;
+    padding: 10px 0;
+}
+#user-view button {
+    background-color: #dc3545;
+}
+#user-view button:hover {
+    background-color: #c82333;
+}
+
+/* Стили для мета-информации */
+.meta-info {
+    font-size: 0.8em;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 15px;
+}
+.meta-info p {
+    margin: 0 0 5px 0;
+}
+.meta-info p:last-child {
+    margin-bottom: 0;
+}
+.meta-info span {
+    font-weight: 500;
+    color: #343a40;
 }
 
 /* --- Стили для самой этикетки --- */
@@ -125,7 +221,6 @@ hr {
     align-items: center;
 }
 .icon {
-    /* width и height теперь задаются динамически в JS */
     vertical-align: middle;
 }
 
@@ -172,4 +267,7 @@ hr {
     .settings-grid {
         grid-template-columns: 1fr;
     }
-}```
+    .button-group {
+        flex-direction: column;
+    }
+}
