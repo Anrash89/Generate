@@ -1,6 +1,8 @@
+// script.js
+
 // ===================================================
-// ===       КОНФИГУРАЦИЯ FIREBASE                ===
-// ===   !!! ЗАМЕНИТЕ ЭТИ ДАННЫЕ СВОИМИ !!!       ===
+// ===        КОНФИГУРАЦИЯ FIREBASE                ===
+// ===    !!! ВСТАВЬТЕ ВАШИ ДАННЫЕ СЮДА !!!        ===
 // ===================================================
 const firebaseConfig = {
   apiKey: "AIzaSyAYEn5CN91w6B4YoTcWrW42qKdJfRm9k7s",
@@ -19,10 +21,10 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const stickersCollection = db.collection("stickers");
 
-// === СПИСОК ID ВСЕХ ПОЛЕЙ (без изменений) ===
+// === СПИСОК ID ВСЕХ ПОЛЕЙ (Добавлено поле material) ===
 const allInputIds = [
     'labelWidth', 'labelHeight', 'fontSize', 'iconSize', 'autoHeight',
-    'productName', 'sku', 'ean13', 'composition', 'origin', 'productionDate',
+    'productName', 'sku', 'ean13', 'composition', 'material', 'origin', 'productionDate',
     'manufacturer', 'importer', 'storageConditions', 'shelfLife', 'compliance',
     'warning', 'feedbackContact'
 ];
@@ -41,23 +43,20 @@ auth.onAuthStateChanged(user => {
         userEmailSpan.textContent = user.email;
         authStatus.textContent = '';
         
-        // === ИЗМЕНЕНИЕ: ПРОВЕРЯЕМ URL НА НАЛИЧИЕ АРТИКУЛА ===
         const urlParams = new URLSearchParams(window.location.search);
         const skuFromUrl = urlParams.get('sku');
         if (skuFromUrl) {
             document.getElementById('loadSku').value = skuFromUrl;
             loadLabel();
-            // Очищаем URL, чтобы при обновлении страницы стикер не загружался снова
             window.history.replaceState({}, document.title, window.location.pathname);
         }
-
     } else {
         loginView.style.display = 'block';
         userView.style.display = 'none';
         userEmailSpan.textContent = '';
     }
 });
-// ... остальные функции (registerUser, loginUser, logoutUser, saveLabel, и т.д.) без изменений
+
 function registerUser() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -85,7 +84,6 @@ function showStatusMessage(elementId, message, isError = false) {
     setTimeout(() => { statusDiv.textContent = ''; statusDiv.className = 'status-message'; }, 4000);
 }
 
-
 function saveLabel() {
     const sku = document.getElementById('sku').value.trim();
     const currentUser = auth.currentUser;
@@ -110,8 +108,6 @@ function saveLabel() {
             dataToSave.createdBy = currentUser.email;
             dataToSave.createdAt = firebase.firestore.FieldValue.serverTimestamp();
         }
-        // set с merge:true создаст документ, если его нет, или обновит, если он есть.
-        // Это как раз то, что вам нужно для "перезаписи".
         docRef.set(dataToSave, { merge: true })
             .then(() => {
                 showStatusMessage('save-status', `Стикер "${sku}" успешно сохранен в базу.`);
@@ -122,7 +118,6 @@ function saveLabel() {
             });
     });
 }
-
 
 function loadLabel(showAlerts = true) {
     const skuToLoad = showAlerts ? document.getElementById('loadSku').value.trim() : document.getElementById('sku').value.trim();
@@ -157,7 +152,9 @@ function collectLabelData() {
     const data = {};
     allInputIds.forEach(id => {
         const input = document.getElementById(id);
-        data[id] = (input.type === 'checkbox') ? input.checked : input.value;
+        if (input) {
+            data[id] = (input.type === 'checkbox') ? input.checked : input.value;
+        }
     });
     data.icons = {};
     iconIds.forEach(id => {
@@ -169,7 +166,7 @@ function collectLabelData() {
 function populateForm(data) {
     allInputIds.forEach(id => {
         const input = document.getElementById(id);
-        if (typeof data[id] !== 'undefined') {
+        if (input && typeof data[id] !== 'undefined') {
             if (input.type === 'checkbox') input.checked = data[id];
             else input.value = data[id];
         }
@@ -184,49 +181,85 @@ function populateForm(data) {
 function pixelsToMm(px) { return px * 25.4 / 96; }
 
 function generateLabel() {
-    // ... эта функция остается без изменений
     const labelWidth = document.getElementById('labelWidth').value;
     const labelHeightInput = document.getElementById('labelHeight');
     const fontSize = document.getElementById('fontSize').value;
     const iconSize = document.getElementById('iconSize').value;
     const autoHeightEnabled = document.getElementById('autoHeight').checked;
+    
     const labelPreview = document.getElementById('label-preview');
 
     labelPreview.style.width = `${labelWidth}mm`;
-    labelPreview.style.fontSize = `${fontSize}pt`;
-    labelPreview.style.height = 'auto';
+    // Применяем размер шрифта ко всей левой секции
+    const detailsSection = document.querySelector('.details-section');
+    if (detailsSection) {
+        detailsSection.style.fontSize = `${fontSize}pt`;
+    }
 
-    const textFields = ['productName', 'composition', 'origin', 'productionDate', 'manufacturer', 'importer', 'storageConditions', 'shelfLife', 'compliance', 'warning'];
+    // Заполнение текстовых полей
+    // Добавлено поле 'material'
+    const textFields = ['productName', 'composition', 'material', 'origin', 'productionDate', 'manufacturer', 'importer', 'storageConditions', 'shelfLife', 'compliance', 'warning'];
+    
     textFields.forEach(id => {
         const element = document.getElementById(`preview-${id}`);
-        if (element) {
-            element.innerText = document.getElementById(id).value;
+        const input = document.getElementById(id);
+        if (element && input) {
+            element.innerText = input.value;
+            // Скрываем строку целиком, если поле пустое (кроме определенных полей)
+            const parentRow = element.closest('.detail-row');
+            if (parentRow) {
+                if (input.value.trim() === '') {
+                    parentRow.style.display = 'none';
+                } else {
+                    parentRow.style.display = 'block';
+                }
+            }
         }
     });
-    document.getElementById('preview-sku').innerText = `Артикул: ${document.getElementById('sku').value}`;
-    const staticPhrase = "Свяжитесь с нами, если что-то пошло не так с товаром или доставкой - мы быстро решим вопрос в рамках законодательства РФ. ";
-    document.getElementById('feedback-content').innerText = staticPhrase + document.getElementById('feedbackContact').value;
 
+    const contactVal = document.getElementById('feedbackContact').value;
+    const feedbackEl = document.getElementById('feedback-content');
+    if (contactVal.trim()) {
+        feedbackEl.innerText = "Связь: " + contactVal;
+    } else {
+        feedbackEl.innerText = "";
+    }
+
+    // === ГЕНЕРАЦИЯ ШТРИХКОДА ===
     const ean13 = document.getElementById('ean13').value;
     if (ean13) {
-        try { JsBarcode("#barcode", ean13, { format: "EAN13", lineColor: "#000", width: 1.5, height: 30, displayValue: true, fontSize: 12 }); } catch (e) { console.error("Barcode error:", e); }
+        try {
+            JsBarcode("#barcode", ean13, {
+                format: "EAN13",
+                lineColor: "#000",
+                width: 2,         // Ширина линий
+                height: 50,       // Высота штрихов (из-за поворота это станет шириной в этикетке)
+                displayValue: true,
+                fontSize: 14,     // Крупный шрифт цифр
+                textMargin: 0,
+                margin: 0
+            });
+        } catch (e) {
+            console.error("Barcode error:", e);
+        }
     } else {
         document.getElementById('barcode').innerHTML = '';
     }
     
+    // === ГЕНЕРАЦИЯ ЗНАЧКОВ ===
     const iconContainer = document.getElementById('preview-icons');
     iconContainer.innerHTML = '';
     const checkedIcons = document.querySelectorAll('input[name="icons"]:checked');
     checkedIcons.forEach(checkbox => {
         const img = document.createElement('img');
-        img.src = 'icons/' + checkbox.value;
+        img.src = 'icons/' + checkbox.value; // Убедитесь, что папка icons существует
         img.alt = checkbox.value.split('.')[0];
         img.className = 'icon';
         img.style.height = `${iconSize}mm`;
-        img.style.width = 'auto';
         iconContainer.appendChild(img);
     });
 
+    // === АВТОВЫСОТА ===
     if (autoHeightEnabled) {
         labelPreview.style.height = 'auto';
         const contentHeightPx = labelPreview.scrollHeight;
@@ -247,5 +280,6 @@ window.onload = () => {
         input.addEventListener('input', generateLabel);
         input.addEventListener('change', generateLabel);
     });
-    generateLabel(); // Запускаем один раз, чтобы предпросмотр не был пустым
+    // Инициализация при загрузке
+    generateLabel(); 
 };
