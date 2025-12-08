@@ -1,4 +1,6 @@
-/* --- Стили для страницы-редактора --- */
+/* style.css */
+
+/* --- Стили для страницы-редактора (Общие) --- */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     display: flex;
@@ -12,7 +14,7 @@ body {
     min-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Расстояние между карточками */
+    gap: 20px;
 }
 .preview-container {
     width: 50%;
@@ -41,13 +43,13 @@ form {
     font-weight: 500;
 }
 
-
 input, textarea {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 100%;
     box-sizing: border-box;
+    font-family: inherit;
 }
 
 button {
@@ -79,7 +81,7 @@ button:hover {
     margin-top: 10px;
 }
 .button-group button {
-    flex-grow: 1; /* Кнопки занимают равное пространство */
+    flex-grow: 1;
 }
 
 .settings-grid {
@@ -111,7 +113,6 @@ hr {
     margin: 15px 0;
 }
 
-/* Стили для сообщений о статусе */
 .status-message {
     margin-top: 10px;
     padding: 10px;
@@ -136,34 +137,22 @@ hr {
     border: 1px solid #f5c6cb;
 }
 
-/* Стили для блока пользователя */
 #user-view {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-#user-view p {
-    margin: 0;
-    padding: 5px 0;
-}
-#user-view button {
-    background-color: #dc3545;
-    margin-top: 0;
-}
-#user-view button:hover {
-    background-color: #c82333;
-}
+#user-view p { margin: 0; padding: 5px 0; }
+#user-view button { background-color: #dc3545; margin-top: 0; }
+#user-view button:hover { background-color: #c82333; }
 
 .list-link {
     text-decoration: none;
     color: #007bff;
     font-weight: 500;
 }
-.list-link:hover {
-    text-decoration: underline;
-}
+.list-link:hover { text-decoration: underline; }
 
-/* Стили для мета-информации */
 .meta-info {
     font-size: 0.8em;
     color: #6c757d;
@@ -173,181 +162,148 @@ hr {
     padding: 10px;
     margin-top: 15px;
 }
-.meta-info p {
-    margin: 0 0 5px 0;
-}
-.meta-info p:last-child {
-    margin-bottom: 0;
-}
-.meta-info span {
-    font-weight: 500;
-    color: #343a40;
-}
+.meta-info p { margin: 0 0 5px 0; }
+.meta-info span { font-weight: 500; color: #343a40; }
 
-/* --- Стили для самой этикетки --- */
+/* ========================================================= */
+/* === НОВЫЕ СТИЛИ ЭТИКЕТКИ (КАК НА ФОТО) === */
+/* ========================================================= */
+
 .label {
-    border: 1px dashed #999;
-    padding: 2mm;
+    /* Жирная рамка как на фото */
+    border: 2px solid #000; 
     background: white;
     box-sizing: border-box;
+    display: flex; 
+    flex-direction: row; /* Две колонки: текст слева, штрихкод справа */
+    overflow: hidden;
+    padding: 2mm 1mm 2mm 3mm; /* Отступы внутрь */
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    position: relative;
+}
+
+/* ЛЕВАЯ КОЛОНКА (Контент) */
+.label-content {
+    flex: 1; 
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    padding-right: 1mm;
 }
 
 .header-section {
-    text-align: center;
-    border-bottom: 1px solid #000;
-    padding-bottom: 1mm;
-    margin-bottom: 1mm;
+    text-align: left;
+    margin-bottom: 2mm;
 }
 .header-section strong {
-    font-size: 1.4em;
+    font-size: 10pt; /* Размер заголовка */
+    font-weight: 700;
     display: block;
-}
-.header-section span {
-    font-size: 1.1em;
-}
-
-.barcode-section {
-    text-align: center;
-    margin: 1mm 0;
-}
-#barcode {
-    width: 90%;
-    height: auto;
+    line-height: 1.1;
 }
 
 .details-section {
     flex-grow: 1;
-}
-.details-section p {
-    margin: 0 0 0.5mm 0;
-    line-height: 1.2;
+    font-size: 7pt; /* Базовый шрифт текста */
 }
 
-.footer-section {
-    margin-top: auto;
-    padding-top: 1mm;
-    display: flex; 
-    justify-content: flex-end; 
-    flex-wrap: wrap; 
-    gap: 1.5mm;
-    align-items: center;
-}
-.icon {
-    vertical-align: middle;
-}
-
-/* --- Стили для печати --- */
-@media print {
-    body {
-        padding: 0;
-        margin: 0;
-        background-color: #fff;
-    }
-    .editor-container, .preview-container h2, button, .list-container {
-        display: none;
-    }
-    .preview-container {
-        width: 100%;
-    }
-    .label {
-        border: none;
-        margin: 0;
-        padding: 0;
-        page-break-after: always;
-        width: 100% !important; 
-        height: auto !important; 
-    }
-}
-
-/* --- Стили для мобильных устройств --- */
-@media (max-width: 900px) {
-    body {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .editor-container,
-    .preview-container {
-        width: 95%;
-        min-width: unset;
-    }
-    
-    .editor-container {
-        margin-bottom: 30px;
-    }
-    
-    .settings-grid {
-        grid-template-columns: 1fr;
-    }
-    .button-group {
-        flex-direction: column;
-    }
-}
-
-/*
-=========================================================
-===   НОВЫЕ СТИЛИ ДЛЯ СТРАНИЦЫ СО СПИСКОМ (list.html) ===
-=========================================================
-*/
-.list-container {
-    width: 95%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.list-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.back-link {
-    text-decoration: none;
-    color: #007bff;
-    font-weight: 500;
-}
-
-.table-wrapper {
-    overflow-x: auto; /* Позволяет таблице скроллиться по горизонтали на маленьких экранах */
-}
-
-.sticker-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.sticker-table th, .sticker-table td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
+/* Стили для строк текста */
+.detail-row {
+    margin-bottom: 1mm;
+    line-height: 1.1;
     text-align: left;
 }
-
-.sticker-table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
+.detail-row strong {
+    font-weight: 700;
 }
 
-.sticker-table tbody tr:nth-of-type(even) {
-    background-color: #f9f9f9;
+/* ФУТЕР (Значки и текст внизу слева) */
+.footer-section {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 1mm;
+}
+.footer-text {
+    font-size: 6pt;
+    width: 65%;
+    line-height: 1;
+}
+.icons-wrapper {
+    display: flex;
+    gap: 1mm;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+.icon {
+    height: 6mm !important; 
+    width: auto;
+    object-fit: contain;
 }
 
-.sticker-table tbody tr:hover {
-    background-color: #f1f1f1;
+/* ПРАВАЯ КОЛОНКА (Штрихкод) */
+.label-sidebar {
+    width: 14mm; /* Узкая колонка справа */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-left: 0px solid white; 
 }
 
-.sticker-table td a {
-    text-decoration: none;
-    color: #007bff;
-    font-weight: 500;
+/* Контейнер для поворота штрихкода */
+.barcode-wrapper {
+    transform: rotate(90deg); /* Поворачиваем на 90 градусов */
+    transform-origin: center center;
+    position: absolute;
+    /* Устанавливаем размеры так, чтобы после поворота он влез */
+    width: 58mm; /* Высота этикетки становится шириной штрихкода */
+    height: 14mm;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    /* Смещаем центр, чтобы компенсировать поворот */
+    translate: -50% -50%;
 }
 
-.sticker-table td a:hover {
-    text-decoration: underline;
+#barcode {
+    width: 95%;
+    height: 100%;
+}
+
+/* Вертикальный текст рядом со штрихкодом (если нужен) */
+.sidebar-text {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 8pt;
+    text-align: center;
+    margin-top: 5px;
+}
+
+/* --- Печать --- */
+@media print {
+    body { padding: 0; margin: 0; background-color: #fff; }
+    .editor-container, .preview-container h2, button, .list-container, .back-link { display: none; }
+    .preview-container { width: 100%; }
+    .label {
+        border: 2px solid #000 !important; /* Принудительно черная рамка при печати */
+        margin: 0;
+        page-break-after: always;
+        /* Важно для печати на термопринтере */
+        width: 100% !important; 
+        height: 100% !important; 
+    }
+}
+
+/* --- Мобильные --- */
+@media (max-width: 900px) {
+    body { flex-direction: column; align-items: center; }
+    .editor-container, .preview-container { width: 95%; min-width: unset; }
+    .editor-container { margin-bottom: 30px; }
+    .settings-grid { grid-template-columns: 1fr; }
+    .button-group { flex-direction: column; }
 }
