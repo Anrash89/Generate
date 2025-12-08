@@ -8,7 +8,6 @@
 </head>
 <body>
     <div class="editor-container">
-        <!-- БЛОК АУТЕНТИФИКАЦИИ -->
         <div class="card" id="auth-section">
             <div id="login-view">
                 <h2>Вход или Регистрация</h2>
@@ -28,13 +27,11 @@
             </div>
             <div id="user-view" style="display: none;">
                 <p>Вы вошли как: <strong id="user-email"></strong></p>
-                <!-- === ИЗМЕНЕНИЕ: ДОБАВЛЕНА ССЫЛКА НА СПИСОК === -->
                 <a href="list.html" class="list-link">Посмотреть список всех стикеров &rarr;</a>
                 <button type="button" onclick="logoutUser()">Выйти</button>
             </div>
         </div>
-        <!-- ... остальная часть файла без изменений ... -->
-        <!-- БЛОК ЗАГРУЗКИ -->
+
         <div class="card">
             <h2>Загрузить стикер из базы</h2>
             <div class="form-group">
@@ -45,19 +42,17 @@
             <button type="button" onclick="loadLabel()">Загрузить из Базы</button>
         </div>
         
-        <!-- ОСНОВНОЙ ГЕНЕРАТОР -->
         <div class="card">
             <h1>Генератор этикеток</h1>
             <form id="label-form">
-                <!-- ... все поля формы остаются здесь ... -->
                  <h3>Настройки этикетки</h3>
                 <div class="settings-grid">
                     <div><label for="labelWidth">Ширина (мм):</label><input type="number" id="labelWidth" value="58"></div>
-                    <div><label for="labelHeight">Высота (мм):</label><input type="number" id="labelHeight" value="60"></div>
-                    <div><label for="fontSize">Размер шрифта (pt):</label><input type="number" id="fontSize" value="7" step="0.5"></div>
-                    <div><label for="iconSize">Высота значков (мм):</label><input type="number" id="iconSize" value="8" step="0.5"></div>
+                    <div><label for="labelHeight">Высота (мм):</label><input type="number" id="labelHeight" value="40"></div>
+                    <div><label for="fontSize">Размер шрифта (pt):</label><input type="number" id="fontSize" value="6.5" step="0.5"></div>
+                    <div><label for="iconSize">Высота значков (мм):</label><input type="number" id="iconSize" value="6" step="0.5"></div>
                 </div>
-                <div class="autofit-container"><input type="checkbox" id="autoHeight" checked onchange="toggleAutoHeight()"><label for="autoHeight">Автоподбор высоты</label></div>
+                <div class="autofit-container"><input type="checkbox" id="autoHeight" onchange="toggleAutoHeight()"><label for="autoHeight">Автоподбор высоты</label></div>
                 <hr>
 
                 <h3>Значки</h3>
@@ -72,19 +67,33 @@
                 <hr>
                 
                 <h3>Содержимое этикетки</h3>
-                <label for="productName">Наименование товара:</label><input type="text" id="productName" value="Школьно-письменные принадлежности - Канцелярский набор «Ink black»">
-                <label for="sku">Артикул (SKU):</label><input type="text" id="sku" value="US005">
-                <label for="ean13">Штрихкод (EAN-13):</label><input type="text" id="ean13" value="6920250915012">
-                <label for="composition">Комплектация:</label><textarea id="composition" rows="5">1 х тетрадь А5, 1 х степлер с 320 скобами, 1 х настольный калькулятор с батареей типа ААА и солнечной панелью, 1 х канцелярский нож, 1 х зажим для бумаги, 1 х набор выделителей 6 шт. разных цветов, 1 х ленточный корректор, 1 х набор гелевых черных ручек 6 шт, 1 х шариковая ручка с 6-ю цветами, 1 х гелевая черная ручка, 1 х коричневая ручка-роллер, 1 х вечный черный карандаш, 1 х ластик, 1 х картонная коробка.</textarea>
+                <label for="productName">Наименование товара:</label><input type="text" id="productName" value="Набор для уборки полов">
+                
+                <label for="sku">Артикул (SKU):</label><input type="text" id="sku" value="440516">
+                
+                <label for="ean13">Штрихкод (EAN-13):</label><input type="text" id="ean13" value="4600000000000">
+                
+                <label for="composition">Комплектация:</label><textarea id="composition" rows="2">Ведро x 1, платформа для крепления тряпки x 1, туба для швабры x 1, насадка тканевая x 2</textarea>
+                
+                <label for="material">Состав (Материал):</label><textarea id="material" rows="2">полипропилен, полиэстер, полиэтилентерефталат, акрилонитрилбутадиенстирол, термопластичная резина, нержавеющая сталь</textarea>
+                
                 <label for="origin">Страна происхождения:</label><input type="text" id="origin" value="Китай">
-                <label for="productionDate">Дата производства / Партия:</label><input type="text" id="productionDate" value="сентябрь 2025">
-                <label for="manufacturer">Производитель:</label><textarea id="manufacturer" rows="2">UNION SOURCE CO.,LTD, Адрес: 12F. Адрес: Sellers Union Buliding, 288 Guanghua Road, National Hi-Tech Zone Ningbo, China 315048, КНР</textarea>
-                <label for="importer">Импортер / Ответственное лицо:</label><textarea id="importer" rows="3">ООО «Спринг», РФ, 121596, г. Москва, вн.тер.г. муниципальный округ Можайский, ул. Горбунова, д.2, стр.3, помещ. 33/2, ИНН 7733368052, ОГРН 1217700184800, Тел.: +7 (495) 032-02-97, e-mail: info@springingredients.ru</textarea>
-                <label for="storageConditions">Условия хранения:</label><textarea id="storageConditions" rows="3">продукция должна храниться в сухом, проветриваемом помещении и должна быть защищена от прямого попадания солнечных лучей и атмосферных воздействий и загрязнений.</textarea>
-                <label for="shelfLife">Срок службы и информация:</label><textarea id="shelfLife" rows="5">Срок хранения, срок службы (годности), гарантийный срок не установлен. Калькулятор модели US005. Правил по хранению и эффективному и безопасному использованию калькулятора нет. Калькулятор работает от батареи или солнечной панели. Батарея входит в набор.</textarea>
-                <label for="compliance">Информация о соответствии:</label><textarea id="compliance" rows="4">Калькулятор соответствует требованиям ТР ТС 037/2016. Упаковка картонная соответствует требованиям ТР ТС 005/2011. Остальные товары соответствуют требованиям ТР ТС 007/2011.</textarea>
-                <label for="warning">Внимание:</label><input type="text" id="warning" value="предназначено для детей старше 3 лет.">
-                <label for="feedbackContact">Контакт для обратной связи:</label><input type="text" id="feedbackContact" value="WhatsApp: +79250588988">
+                
+                <label for="productionDate">Дата производства / Партия:</label><input type="text" id="productionDate" value="Ноябрь 2025">
+                
+                <label for="manufacturer">Производитель:</label><textarea id="manufacturer" rows="2">BENHENG TECHNOLOGY LTD., Адрес: No.68 Jinggang Road, Shushan District, Hefei, Anhui, China, KHP</textarea>
+                
+                <label for="importer">Импортер / Претензии:</label><textarea id="importer" rows="4">ООО «Спринг», РФ, 121596, г. Москва, вн.тер.г. муниципальный округ Можайский, ул. Горбунова, д.2, стр.3, помещ.33/2, ИНН 7733368052, ОГРН 1217700184800, Тел.: +7 (495) 032-02-97, e-mail: info@springingredients.ru</textarea>
+                
+                <label for="storageConditions">Условия хранения:</label><textarea id="storageConditions" rows="2">продукция должна храниться в сухом, проветриваемом помещении.</textarea>
+                
+                <label for="shelfLife">Срок службы / Годность:</label><textarea id="shelfLife" rows="1">Срок хранения, срок службы (годности) не ограничен.</textarea>
+                
+                <label for="compliance">Инфо (внизу слева):</label><textarea id="compliance" rows="1"></textarea>
+                
+                <label for="warning">Внимание (скрыто на фото, но оставим):</label><input type="text" id="warning" value="">
+                
+                <label for="feedbackContact">Контакт (скрыт на фото):</label><input type="text" id="feedbackContact" value="">
                 
                 <div class="meta-info">
                     <p>Создал: <span id="meta-created">N/A</span></p>
@@ -100,34 +109,51 @@
             </form>
         </div>
     </div>
+    
     <div class="preview-container">
         <h2>Предпросмотр</h2>
+        
         <div id="label-preview" class="label">
-             <!-- ... вся структура предпросмотра остается здесь ... -->
-              <div class="header-section"><strong id="preview-productName"></strong><span id="preview-sku"></span></div>
-             <div class="barcode-section"><svg id="barcode"></svg></div>
-             <div class="details-section">
-                <p><strong>Комплектация:</strong> <span id="preview-composition"></span></p>
-                <p><strong>Страна происхождения:</strong> <span id="preview-origin"></span></p>
-                <p><strong>Дата производства / Партия:</strong> <span id="preview-productionDate"></span></p>
-                <p><strong>Производитель:</strong> <span id="preview-manufacturer"></span></p>
-                <p><strong>Импортер/лицо для претензий в РФ:</strong> <span id="preview-importer"></span></p>
-                <p><strong>Условия хранения:</strong> <span id="preview-storageConditions"></span></p>
-                <p><span id="preview-shelfLife"></span></p>
-                <p><span id="preview-compliance"></span></p>
-                <p><strong>Внимание:</strong> <span id="preview-warning"></span></p>
-                <p><strong>Обратная связь:</strong> <span id="feedback-content"></span></p>
-             </div>
-             <div class="footer-section" id="preview-icons"></div>
+            
+            <div class="label-content">
+                <div class="header-section">
+                    <strong id="preview-productName"></strong>
+                </div>
+                
+                <div class="details-section">
+                    <div class="detail-row"><strong>Комплектация: </strong><span id="preview-composition"></span></div>
+                    <div class="detail-row"><strong>Состав: </strong><span id="preview-material"></span></div>
+                    <div class="detail-row"><strong>Страна происхождения: </strong><span id="preview-origin"></span></div>
+                    <div class="detail-row"><strong>Дата производства / Партия: </strong><span id="preview-productionDate"></span></div>
+                    <div class="detail-row"><strong>Производитель: </strong><span id="preview-manufacturer"></span></div>
+                    <div class="detail-row"><strong>Импортер/лицо для претензий в РФ: </strong><span id="preview-importer"></span></div>
+                    <div class="detail-row"><strong>Условия хранения: </strong><span id="preview-storageConditions"></span></div>
+                    <div class="detail-row"><span id="preview-shelfLife"></span></div>
+                    <div class="detail-row"><strong>Внимание: </strong><span id="preview-warning"></span></div>
+                    <div class="detail-row"><span id="feedback-content"></span></div>
+                </div>
+
+                <div class="footer-section">
+                     <div class="footer-text">
+                         <span id="preview-compliance"></span>
+                     </div>
+                     <div id="preview-icons" class="icons-wrapper"></div>
+                </div>
+            </div>
+
+            <div class="label-sidebar">
+                <div class="barcode-wrapper">
+                     <svg id="barcode"></svg>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
-    <!-- Other Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script src="script.js"></script>
 </body>
