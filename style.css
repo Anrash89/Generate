@@ -202,6 +202,14 @@ hr {
     line-height: 1.1;
 }
 
+/* Стиль для Артикула под названием */
+.sku-header {
+    font-size: 8pt;
+    font-weight: normal;
+    margin-top: 2px;
+    display: block;
+}
+
 .details-section {
     flex-grow: 1;
     font-size: 7pt; /* Базовый шрифт текста */
