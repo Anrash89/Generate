@@ -21,7 +21,7 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const stickersCollection = db.collection("stickers");
 
-// === СПИСОК ID ВСЕХ ПОЛЕЙ (Добавлено lineHeight) ===
+// === СПИСОК ID ВСЕХ ПОЛЕЙ ===
 const allInputIds = [
     'labelWidth', 'labelHeight', 'fontSize', 'lineHeight', 'iconSize', 'autoHeight',
     'productName', 'sku', 'ean13', 'composition', 'material', 'origin', 'productionDate',
@@ -184,7 +184,6 @@ function generateLabel() {
     const labelWidth = document.getElementById('labelWidth').value;
     const labelHeightInput = document.getElementById('labelHeight');
     const fontSize = document.getElementById('fontSize').value;
-    // Получаем значение межстрочного интервала
     const lineHeight = document.getElementById('lineHeight').value;
     const iconSize = document.getElementById('iconSize').value;
     const autoHeightEnabled = document.getElementById('autoHeight').checked;
@@ -193,11 +192,9 @@ function generateLabel() {
 
     labelPreview.style.width = `${labelWidth}mm`;
     
-    // Применяем стили шрифта и интервала
     const detailsSection = document.querySelector('.details-section');
     if (detailsSection) {
         detailsSection.style.fontSize = `${fontSize}pt`;
-        // Применяем интервал
         detailsSection.style.lineHeight = lineHeight;
     }
 
@@ -225,6 +222,13 @@ function generateLabel() {
         feedbackEl.innerText = "Связь: " + contactVal;
     } else {
         feedbackEl.innerText = "";
+    }
+
+    // === НОВОЕ: ВЫВОД АРТИКУЛА В ЗАГОЛОВКЕ ===
+    const skuVal = document.getElementById('sku').value;
+    const skuHeaderEl = document.getElementById('preview-sku-header');
+    if (skuHeaderEl) {
+        skuHeaderEl.innerText = skuVal ? "Артикул: " + skuVal : ""; 
     }
 
     const ean13 = document.getElementById('ean13').value;
