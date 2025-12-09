@@ -210,7 +210,8 @@ hr {
 /* Стили для строк текста */
 .detail-row {
     margin-bottom: 1mm;
-    line-height: 1.1;
+    /* ИЗМЕНЕНО: ставим inherit, чтобы работала настройка JS */
+    line-height: inherit; 
     text-align: left;
 }
 .detail-row strong {
