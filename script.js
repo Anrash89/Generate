@@ -21,7 +21,7 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const stickersCollection = db.collection("stickers");
 
-// === СПИСОК ID ВСЕХ ПОЛЕЙ (Добавлено lineHeight) ===
+// === СПИСОК ID ВСЕХ ПОЛЕЙ ===
 const allInputIds = [
     'labelWidth', 'labelHeight', 'fontSize', 'lineHeight', 'iconSize', 'autoHeight',
     'productName', 'sku', 'ean13', 'composition', 'material', 'origin', 'productionDate',
@@ -184,7 +184,6 @@ function generateLabel() {
     const labelWidth = document.getElementById('labelWidth').value;
     const labelHeightInput = document.getElementById('labelHeight');
     const fontSize = document.getElementById('fontSize').value;
-    // Получаем значение межстрочного интервала
     const lineHeight = document.getElementById('lineHeight').value;
     const iconSize = document.getElementById('iconSize').value;
     const autoHeightEnabled = document.getElementById('autoHeight').checked;
@@ -193,11 +192,9 @@ function generateLabel() {
 
     labelPreview.style.width = `${labelWidth}mm`;
     
-    // Применяем стили шрифта и интервала
     const detailsSection = document.querySelector('.details-section');
     if (detailsSection) {
         detailsSection.style.fontSize = `${fontSize}pt`;
-        // Применяем интервал
         detailsSection.style.lineHeight = lineHeight;
     }
 
@@ -227,17 +224,38 @@ function generateLabel() {
         feedbackEl.innerText = "";
     }
 
+    // === ВЫВОД АРТИКУЛА В БОКОВУЮ ПАНЕЛЬ ===
+    const skuVal = document.getElementById('sku').value;
+    const skuEl = document.getElementById('preview-sku-vertical');
+    if(skuEl) {
+        skuEl.innerText = skuVal ? skuVal : ''; // Просто цифры артикула
+    }
+
+    // === ГЕНЕРАЦИЯ ШТРИХКОДА ===
     const ean13 = document.getElementById('ean13').value;
+    const barcodeTextEl = document.getElementById('barcode-text-display');
+    
     if (ean13) {
+        // Форматируем текст (добавляем пробелы как на фото: 123456 789012 >)
+        // Обычно разбиение 6 цифр, 6 цифр, 1 цифра
+        let formattedEan = ean13;
+        if(ean13.length === 13) {
+            formattedEan = `${ean13.substring(0, 1)} ${ean13.substring(1, 7)} ${ean13.substring(7, 13)}`;
+             // Или как на вашем фото, там разбиение по 6 цифр
+             // На фото: 440516 (артикул?) и штрихкод.
+             // Давайте просто выведем EAN как есть, но с пробелами посередине для красоты
+             // Если хотите точь-в-точь как на фото, там цифры просто стоят.
+             formattedEan = ean13; 
+        }
+        if(barcodeTextEl) barcodeTextEl.innerText = formattedEan;
+
         try {
             JsBarcode("#barcode", ean13, {
                 format: "EAN13",
                 lineColor: "#000",
                 width: 2,         
                 height: 50,       
-                displayValue: true,
-                fontSize: 14,
-                textMargin: 0,
+                displayValue: false, // ВАЖНО: Отключаем стандартные цифры
                 margin: 0
             });
         } catch (e) {
@@ -245,8 +263,10 @@ function generateLabel() {
         }
     } else {
         document.getElementById('barcode').innerHTML = '';
+        if(barcodeTextEl) barcodeTextEl.innerText = '';
     }
     
+    // === ЗНАЧКИ ===
     const iconContainer = document.getElementById('preview-icons');
     iconContainer.innerHTML = '';
     const checkedIcons = document.querySelectorAll('input[name="icons"]:checked');
