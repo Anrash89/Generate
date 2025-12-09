@@ -224,38 +224,27 @@ function generateLabel() {
         feedbackEl.innerText = "";
     }
 
-    // === ВЫВОД АРТИКУЛА В БОКОВУЮ ПАНЕЛЬ ===
+    // === АРТИКУЛ В ЗАГОЛОВКЕ (ПОД НАЗВАНИЕМ) ===
     const skuVal = document.getElementById('sku').value;
-    const skuEl = document.getElementById('preview-sku-vertical');
-    if(skuEl) {
-        skuEl.innerText = skuVal ? skuVal : ''; // Просто цифры артикула
+    const skuHeaderEl = document.getElementById('preview-sku-header');
+    if(skuHeaderEl) {
+        // Выводим "Артикул: XXXXX" или просто номер, как хотите. Обычно пишут "Арт."
+        skuHeaderEl.innerText = skuVal ? "Артикул: " + skuVal : ""; 
     }
 
-    // === ГЕНЕРАЦИЯ ШТРИХКОДА ===
+    // === ГЕНЕРАЦИЯ ШТРИХКОДА (СТАНДАРТНАЯ) ===
     const ean13 = document.getElementById('ean13').value;
-    const barcodeTextEl = document.getElementById('barcode-text-display');
     
     if (ean13) {
-        // Форматируем текст (добавляем пробелы как на фото: 123456 789012 >)
-        // Обычно разбиение 6 цифр, 6 цифр, 1 цифра
-        let formattedEan = ean13;
-        if(ean13.length === 13) {
-            formattedEan = `${ean13.substring(0, 1)} ${ean13.substring(1, 7)} ${ean13.substring(7, 13)}`;
-             // Или как на вашем фото, там разбиение по 6 цифр
-             // На фото: 440516 (артикул?) и штрихкод.
-             // Давайте просто выведем EAN как есть, но с пробелами посередине для красоты
-             // Если хотите точь-в-точь как на фото, там цифры просто стоят.
-             formattedEan = ean13; 
-        }
-        if(barcodeTextEl) barcodeTextEl.innerText = formattedEan;
-
         try {
             JsBarcode("#barcode", ean13, {
                 format: "EAN13",
                 lineColor: "#000",
                 width: 2,         
                 height: 50,       
-                displayValue: false, // ВАЖНО: Отключаем стандартные цифры
+                displayValue: true, // ВКЛЮЧАЕМ стандартные цифры
+                fontSize: 14,
+                textMargin: 0,
                 margin: 0
             });
         } catch (e) {
@@ -263,7 +252,6 @@ function generateLabel() {
         }
     } else {
         document.getElementById('barcode').innerHTML = '';
-        if(barcodeTextEl) barcodeTextEl.innerText = '';
     }
     
     // === ЗНАЧКИ ===
