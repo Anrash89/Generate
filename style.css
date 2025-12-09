@@ -201,6 +201,14 @@ hr {
     line-height: 1.1;
 }
 
+/* Стиль для Артикула под названием */
+.sku-header {
+    font-size: 8pt;
+    font-weight: normal;
+    margin-top: 2px;
+    display: block;
+}
+
 .details-section {
     flex-grow: 1;
     font-size: 7pt;
@@ -239,57 +247,36 @@ hr {
     object-fit: contain;
 }
 
-/* ПРАВАЯ КОЛОНКА (Штрихкод и Артикул) */
+/* ПРАВАЯ КОЛОНКА (Штрихкод) */
 .label-sidebar {
-    width: 15mm; 
+    width: 14mm; 
     position: relative;
     border-left: 0px solid white; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Враппер, который мы поворачиваем на -90 градусов.
-   Он содержит: Артикул - Баркод - Цифры
-*/
-.sidebar-rotator {
+/* Поворот штрихкода (цифры наружу) */
+.barcode-wrapper {
     transform: rotate(-90deg); 
     transform-origin: center center;
     position: absolute;
-    
-    /* Размеры контейнера после поворота должны быть как высота этикетки */
-    width: 50mm; /* Ширина контента штрихкода */
-    height: 15mm; /* Высота контента (станет шириной сайдбара) */
+    width: 58mm; 
+    height: 14mm; 
     
     display: flex;
-    flex-direction: column; /* Элементы друг над другом (до поворота) */
     align-items: center;
     justify-content: center;
-    gap: 2px;
     
     top: 50%;
     left: 50%;
     translate: -50% -50%;
 }
 
-/* Стили для Артикула (сверху над штрихкодом до поворота = слева после) */
-.vertical-sku {
-    font-size: 8pt;
-    font-weight: bold;
-    letter-spacing: 1px;
-    white-space: nowrap;
-}
-
-/* SVG штрихкода */
 #barcode {
-    width: 100%;
-    height: 35px; /* Высота самих палочек */
-}
-
-/* Цифры штрихкода (снизу под штрихкодом до поворота = справа после) */
-.barcode-numbers {
-    font-size: 10pt; /* Крупные цифры как на фото */
-    font-family: 'Courier New', monospace; /* Моноширинный шрифт для имитации */
-    font-weight: bold;
-    letter-spacing: 2px;
-    white-space: nowrap;
+    width: 95%;
+    height: 100%;
 }
 
 /* --- Печать --- */
