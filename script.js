@@ -21,9 +21,9 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const stickersCollection = db.collection("stickers");
 
-// === СПИСОК ID ВСЕХ ПОЛЕЙ (Добавлено поле material) ===
+// === СПИСОК ID ВСЕХ ПОЛЕЙ (Добавлено lineHeight) ===
 const allInputIds = [
-    'labelWidth', 'labelHeight', 'fontSize', 'iconSize', 'autoHeight',
+    'labelWidth', 'labelHeight', 'fontSize', 'lineHeight', 'iconSize', 'autoHeight',
     'productName', 'sku', 'ean13', 'composition', 'material', 'origin', 'productionDate',
     'manufacturer', 'importer', 'storageConditions', 'shelfLife', 'compliance',
     'warning', 'feedbackContact'
@@ -184,20 +184,23 @@ function generateLabel() {
     const labelWidth = document.getElementById('labelWidth').value;
     const labelHeightInput = document.getElementById('labelHeight');
     const fontSize = document.getElementById('fontSize').value;
+    // Получаем значение межстрочного интервала
+    const lineHeight = document.getElementById('lineHeight').value;
     const iconSize = document.getElementById('iconSize').value;
     const autoHeightEnabled = document.getElementById('autoHeight').checked;
     
     const labelPreview = document.getElementById('label-preview');
 
     labelPreview.style.width = `${labelWidth}mm`;
-    // Применяем размер шрифта ко всей левой секции
+    
+    // Применяем стили шрифта и интервала
     const detailsSection = document.querySelector('.details-section');
     if (detailsSection) {
         detailsSection.style.fontSize = `${fontSize}pt`;
+        // Применяем интервал
+        detailsSection.style.lineHeight = lineHeight;
     }
 
-    // Заполнение текстовых полей
-    // Добавлено поле 'material'
     const textFields = ['productName', 'composition', 'material', 'origin', 'productionDate', 'manufacturer', 'importer', 'storageConditions', 'shelfLife', 'compliance', 'warning'];
     
     textFields.forEach(id => {
@@ -205,7 +208,6 @@ function generateLabel() {
         const input = document.getElementById(id);
         if (element && input) {
             element.innerText = input.value;
-            // Скрываем строку целиком, если поле пустое (кроме определенных полей)
             const parentRow = element.closest('.detail-row');
             if (parentRow) {
                 if (input.value.trim() === '') {
@@ -225,17 +227,16 @@ function generateLabel() {
         feedbackEl.innerText = "";
     }
 
-    // === ГЕНЕРАЦИЯ ШТРИХКОДА ===
     const ean13 = document.getElementById('ean13').value;
     if (ean13) {
         try {
             JsBarcode("#barcode", ean13, {
                 format: "EAN13",
                 lineColor: "#000",
-                width: 2,         // Ширина линий
-                height: 50,       // Высота штрихов (из-за поворота это станет шириной в этикетке)
+                width: 2,         
+                height: 50,       
                 displayValue: true,
-                fontSize: 14,     // Крупный шрифт цифр
+                fontSize: 14,
                 textMargin: 0,
                 margin: 0
             });
@@ -246,20 +247,18 @@ function generateLabel() {
         document.getElementById('barcode').innerHTML = '';
     }
     
-    // === ГЕНЕРАЦИЯ ЗНАЧКОВ ===
     const iconContainer = document.getElementById('preview-icons');
     iconContainer.innerHTML = '';
     const checkedIcons = document.querySelectorAll('input[name="icons"]:checked');
     checkedIcons.forEach(checkbox => {
         const img = document.createElement('img');
-        img.src = 'icons/' + checkbox.value; // Убедитесь, что папка icons существует
+        img.src = 'icons/' + checkbox.value; 
         img.alt = checkbox.value.split('.')[0];
         img.className = 'icon';
         img.style.height = `${iconSize}mm`;
         iconContainer.appendChild(img);
     });
 
-    // === АВТОВЫСОТА ===
     if (autoHeightEnabled) {
         labelPreview.style.height = 'auto';
         const contentHeightPx = labelPreview.scrollHeight;
@@ -280,6 +279,5 @@ window.onload = () => {
         input.addEventListener('input', generateLabel);
         input.addEventListener('change', generateLabel);
     });
-    // Инициализация при загрузке
     generateLabel(); 
 };
