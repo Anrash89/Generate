@@ -255,7 +255,9 @@ hr {
 
 /* Контейнер для поворота штрихкода */
 .barcode-wrapper {
-    transform: rotate(90deg); /* Поворачиваем на 90 градусов */
+    /* ИЗМЕНЕНО: -90deg поворачивает цифры наружу (вправо) */
+    transform: rotate(-90deg); 
+    
     transform-origin: center center;
     position: absolute;
     /* Устанавливаем размеры так, чтобы после поворота он влез */
