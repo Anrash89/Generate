@@ -21,7 +21,7 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const stickersCollection = db.collection("stickers");
 
-// === СПИСОК ID ВСЕХ ПОЛЕЙ ===
+// === СПИСОК ID ВСЕХ ПОЛЕЙ (Добавлено lineHeight) ===
 const allInputIds = [
     'labelWidth', 'labelHeight', 'fontSize', 'lineHeight', 'iconSize', 'autoHeight',
     'productName', 'sku', 'ean13', 'composition', 'material', 'origin', 'productionDate',
@@ -184,6 +184,7 @@ function generateLabel() {
     const labelWidth = document.getElementById('labelWidth').value;
     const labelHeightInput = document.getElementById('labelHeight');
     const fontSize = document.getElementById('fontSize').value;
+    // Получаем значение межстрочного интервала
     const lineHeight = document.getElementById('lineHeight').value;
     const iconSize = document.getElementById('iconSize').value;
     const autoHeightEnabled = document.getElementById('autoHeight').checked;
@@ -192,9 +193,11 @@ function generateLabel() {
 
     labelPreview.style.width = `${labelWidth}mm`;
     
+    // Применяем стили шрифта и интервала
     const detailsSection = document.querySelector('.details-section');
     if (detailsSection) {
         detailsSection.style.fontSize = `${fontSize}pt`;
+        // Применяем интервал
         detailsSection.style.lineHeight = lineHeight;
     }
 
@@ -224,17 +227,7 @@ function generateLabel() {
         feedbackEl.innerText = "";
     }
 
-    // === АРТИКУЛ В ЗАГОЛОВКЕ (ПОД НАЗВАНИЕМ) ===
-    const skuVal = document.getElementById('sku').value;
-    const skuHeaderEl = document.getElementById('preview-sku-header');
-    if(skuHeaderEl) {
-        // Выводим "Артикул: XXXXX" или просто номер, как хотите. Обычно пишут "Арт."
-        skuHeaderEl.innerText = skuVal ? "Артикул: " + skuVal : ""; 
-    }
-
-    // === ГЕНЕРАЦИЯ ШТРИХКОДА (СТАНДАРТНАЯ) ===
     const ean13 = document.getElementById('ean13').value;
-    
     if (ean13) {
         try {
             JsBarcode("#barcode", ean13, {
@@ -242,7 +235,7 @@ function generateLabel() {
                 lineColor: "#000",
                 width: 2,         
                 height: 50,       
-                displayValue: true, // ВКЛЮЧАЕМ стандартные цифры
+                displayValue: true,
                 fontSize: 14,
                 textMargin: 0,
                 margin: 0
@@ -254,7 +247,6 @@ function generateLabel() {
         document.getElementById('barcode').innerHTML = '';
     }
     
-    // === ЗНАЧКИ ===
     const iconContainer = document.getElementById('preview-icons');
     iconContainer.innerHTML = '';
     const checkedIcons = document.querySelectorAll('input[name="icons"]:checked');
