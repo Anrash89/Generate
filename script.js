@@ -28,7 +28,19 @@ const allInputIds = [
     'manufacturer', 'importer', 'storageConditions', 'shelfLife', 'compliance',
     'warning', 'feedbackContact'
 ];
-const iconIds = ['icon-eac', 'icon-pap20', 'icon-pp05', 'icon-abs9', 'icon-ps06', 'icon-pap21'];
+
+// Добавили новые ID в конец списка
+const iconIds = [
+    'icon-eac', 
+    'icon-pap20', 
+    'icon-pp05', 
+    'icon-abs9', 
+    'icon-ps06', 
+    'icon-pap21', 
+    'icon-rst', 
+    'icon-food', 
+    'icon-mobius'
+];
 
 // === ЛОГИКА АУТЕНТИФИКАЦИИ ===
 const loginView = document.getElementById('login-view');
@@ -224,7 +236,7 @@ function generateLabel() {
         feedbackEl.innerText = "";
     }
 
-    // === НОВОЕ: ВЫВОД АРТИКУЛА В ЗАГОЛОВКЕ ===
+    // === ВЫВОД АРТИКУЛА В ЗАГОЛОВКЕ ===
     const skuVal = document.getElementById('sku').value;
     const skuHeaderEl = document.getElementById('preview-sku-header');
     if (skuHeaderEl) {
@@ -237,7 +249,7 @@ function generateLabel() {
             JsBarcode("#barcode", ean13, {
                 format: "EAN13",
                 lineColor: "#000",
-                width: 2,         
+                width: 2,          
                 height: 50,       
                 displayValue: true,
                 fontSize: 14,
