@@ -29,7 +29,7 @@ const allInputIds = [
     'warning', 'feedbackContact'
 ];
 
-// Добавили новые ID в конец списка
+// Полный список ID чекбоксов с иконками
 const iconIds = [
     'icon-eac', 
     'icon-pap20', 
@@ -39,7 +39,9 @@ const iconIds = [
     'icon-pap21', 
     'icon-rst', 
     'icon-food', 
-    'icon-mobius'
+    'icon-mobius',
+    'icon-pet01', // Новый
+    'icon-o07'    // Новый
 ];
 
 // === ЛОГИКА АУТЕНТИФИКАЦИИ ===
