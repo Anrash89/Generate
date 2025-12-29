@@ -40,8 +40,9 @@ const iconIds = [
     'icon-rst', 
     'icon-food', 
     'icon-mobius',
-    'icon-pet01', // Новый
-    'icon-o07'    // Новый
+    'icon-pet01', 
+    'icon-o07',
+    'icon-ldpe04' // Новый: LDPE 04
 ];
 
 // === ЛОГИКА АУТЕНТИФИКАЦИИ ===
